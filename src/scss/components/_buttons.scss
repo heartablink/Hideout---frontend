@@ -1,0 +1,14 @@
+a {
+  text-decoration: none;
+  color: white;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: #ababab;
+    opacity: 0.8;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}

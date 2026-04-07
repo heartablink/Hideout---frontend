@@ -1,0 +1,50 @@
+.rooms {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 8px;
+  row-gap: 32px;
+  justify-items: center;
+}
+.rooms > * {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 14px;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .resetButton {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-self: flex-end;
+    gap: 6px;
+    padding: 8px 12px;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+.filters {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; // разрешаем перенос на мобильных
+  align-items: flex-end; // выравниваем по нижнему краю, чтобы лейблы были на одном уровне
+  gap: 20px 16px; // row-gap 20px, column-gap 16px
+  margin-bottom: 24px; // отступ до сетки комнат
+
+  // Блок с двумя сортировками прижимаем к правому краю и убираем лишние отступы
+  .sort {
+    display: flex;
+    gap: 16px;
+    margin-left: auto; // прижимаем вправо
+  }
+}

@@ -1,0 +1,23 @@
+@import 'abstracts/variables';
+@import 'base/typography'; // Типографика
+@import 'components/app';
+@import 'abstracts/mixins';
+@import 'components/buttons';
+@import 'abstracts/animations';
+
+// Высота хедера (подберите свою, например 80px)
+$header-height: 80px;
+// Горизонтальные отступы для страниц (кроме главной)
+$content-padding-x: 40px;
+
+.content {
+  &--with-padding {
+    padding-top: $header-height;
+    padding-left: $content-padding-x;
+    padding-right: $content-padding-x;
+
+    // Опционально: ограничение ширины и центрирование
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}

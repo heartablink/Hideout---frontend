@@ -1,0 +1,63 @@
+@use '../../scss/abstracts/variables' as v;
+
+.wrapper {
+  height: 284px;
+  width: 214px;
+  overflow: hidden;
+  border-radius: 20px;
+  transition: box-shadow 0.3s;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    border-radius: 20px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70%; // Высота градиента
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.8) 20%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    opacity: 0; // Прозрачность 0 - не видно
+    transition: opacity 0.3s ease; // Плавное появление
+    pointer-events: none; // Чтобы не мешал кликам
+  }
+
+  .gameInfo {
+    position: absolute;
+    bottom: 0; // Текст спрятан снизу
+    left: 0;
+    right: 0;
+    padding: 10px 25px;
+    color: transparent;
+    transition: color 0.3s ease; // Анимация появления
+    z-index: 100;
+  }
+
+  &:hover .gameInfo {
+    color: white; // Появляется снизу
+  }
+
+  &:hover {
+    transform: scale(1.1); // Увеличивается без изменения размеров в сетке
+    z-index: 10; // Чтобы элемент был поверх других
+    box-shadow: 0px 0px 30px v.$secondary-color;
+
+    // Показываем градиент
+    &::after {
+      opacity: 1;
+    }
+  }
+}

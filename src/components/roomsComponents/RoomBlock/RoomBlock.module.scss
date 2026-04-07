@@ -1,0 +1,51 @@
+@use '../../../scss/abstracts/variables' as v;
+
+.content {
+  height: fit-content;
+  width: 400px;
+  border-radius: 20px;
+  background-color: v.$gray-back;
+
+  &:hover {
+    transform: scale(1.03); // Увеличивается без изменения размеров в сетке
+    z-index: 10; // Чтобы элемент был поверх других
+    box-shadow: 0px 0px 30px v.$secondary-color;
+
+    // Показываем градиент
+    &::after {
+      opacity: 1;
+    }
+  }
+  .imageBlock {
+    height: 300px;
+    background-color: v.$gray-back;
+    border-radius: 20px;
+  }
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .inforoom {
+    margin: 12px 24px;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+  }
+
+  h4 {
+    margin-top: 0px;
+  }
+  .typeRoom {
+    display: flex;
+    justify-content: right;
+  }
+  p {
+    display: flex;
+    align-items: center;
+    margin: 4px;
+    svg {
+      margin-right: 4px;
+    }
+  }
+}

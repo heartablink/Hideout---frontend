@@ -1,0 +1,17 @@
+@import '../abstracts/variables'; // Импортируем переменные
+
+// Базовые стили для ВСЕГО приложения
+body {
+  font-family: $font-family-body;
+  color: white;
+}
+
+// Заголовки
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-family-heading;
+}

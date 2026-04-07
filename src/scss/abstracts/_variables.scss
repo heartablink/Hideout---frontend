@@ -1,0 +1,47 @@
+$font-family-heading:
+  'Stapel',
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  sans-serif;
+
+$font-family-body:
+  'Roboto',
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  sans-serif;
+
+// styles/abstracts/_variables.scss
+
+// Цвета
+$primary-color: #b8f79b;
+$secondary-color: #e1c8f9;
+$pink-color: #fc90c2;
+$navy: #25316b;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$gray-back: #27262c;
+$hover-color: #cccccc;
+
+// Размеры отступов
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// Размеры шрифтов
+$font-size-sm: 14px;
+$font-size-base: 16px;
+$font-size-lg: 18px;
+
+// Скругления
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+
+// Тени
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);

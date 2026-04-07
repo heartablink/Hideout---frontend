@@ -1,0 +1,58 @@
+@use '../../scss/abstracts/mixins' as m;
+@use '../../scss/abstracts/variables' as v;
+
+.logo {
+  height: 50px;
+  margin-right: 40px;
+}
+
+.root {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-items: center;
+  height: fit-content;
+  z-index: 1000;
+  position: fixed;
+  padding: 0 20px;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3); // полупрозрачный фон
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+  backdrop-filter: blur(10px); // размытие фона под шапкой
+
+  .logoBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    h1 {
+      font-size: 22px;
+    }
+  }
+
+  ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  li {
+    margin: 0px 30px;
+    list-style: none;
+
+    a {
+      @include m.link-base;
+    }
+  }
+
+  .authBox {
+    li {
+      margin: 5px;
+      color: white;
+    }
+  }
+}

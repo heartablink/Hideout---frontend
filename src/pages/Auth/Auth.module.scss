@@ -1,0 +1,49 @@
+@use '../../scss/abstracts/variables' as v;
+
+.wrapper {
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  padding-top: 5vh;
+  height: 100vh;
+  width: auto;
+}
+
+.form {
+  border-radius: 20px;
+  background-color: v.$gray-back;
+  box-shadow: 0 0 50px 0px v.$pink-color;
+  width: 500px; // Немного сузим для красоты
+  min-height: 400px; // Вместо жесткого height лучше использовать min-height
+  height: fit-content;
+  padding: 40px; // Уменьшим паддинг, чтобы внутри было больше места
+  display: flex;
+  flex-direction: column;
+
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 40px; // Отступ кнопок от полей ввода
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; // Расстояние между инпутами и текстом
+
+    p {
+      margin: 0; // Сбрасываем дефолтные отступы параграфов
+      color: white; // Если фон темный
+    }
+
+    input {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      margin-bottom: 10px;
+    }
+  }
+}

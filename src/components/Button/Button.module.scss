@@ -1,0 +1,35 @@
+@use '../../scss/abstracts/variables' as v;
+@use '../../scss/abstracts/mixins' as m;
+
+.btn {
+  @include m.button-base;
+  background-color: v.$primary-color;
+  color: black;
+  font-size: 20px;
+
+  &:hover {
+    background-color: v.$secondary-color;
+  }
+
+  // Модификаторы для прозрачных кнопок
+  &.simple,
+  &.titlebtn,
+  &.titlebtn_active {
+    background-color: transparent;
+    color: white;
+
+    // Переопределяем ховер специально для них
+    &:hover {
+      background-color: transparent; // Чтобы фон не появлялся от базового .btn
+      color: v.$hover-color; // Текст становится нужного цвета
+    }
+  }
+
+  &.titlebtn {
+    font-family: v.$font-family-heading;
+  }
+  &.titlebtn_active {
+    font-family: v.$font-family-heading;
+    color: v.$hover-color;
+  }
+}

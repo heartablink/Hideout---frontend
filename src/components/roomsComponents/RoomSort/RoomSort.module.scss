@@ -1,0 +1,91 @@
+@use '../../../scss/abstracts/variables' as v;
+
+.sort {
+  position: relative;
+  display: inline-block;
+
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+
+    b {
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: lighten(v.$navy, 25%);
+    }
+
+    span {
+      background-color: v.$navy;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: lighten(v.$navy, 10%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  &__popup {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    background: #ffffff;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    border-radius: 16px;
+    overflow: hidden;
+    padding: 8px 0;
+    min-width: 220px;
+    z-index: 100;
+    border: 1px solid rgba(v.$navy, 0.08);
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        padding: 12px 24px 12px 20px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        color: #2d3748;
+        transition: all 0.15s;
+        white-space: nowrap;
+        position: relative;
+
+        &:hover {
+          background: rgba(v.$navy, 0.04);
+        }
+
+        &.active {
+          font-weight: 700;
+          color: v.$navy;
+          background: rgba(v.$navy, 0.06);
+
+          &::after {
+            content: '✓';
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: v.$navy;
+            font-weight: bold;
+            font-size: 1.1rem;
+          }
+        }
+      }
+    }
+  }
+}

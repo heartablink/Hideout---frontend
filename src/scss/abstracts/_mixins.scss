@@ -1,0 +1,36 @@
+@use '../../scss/abstracts/variables' as v;
+
+// _mixins.scss
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 7px 28px;
+  border-radius: 24px;
+  border: none;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin link-base($color: white, $hover-color: v.$hover-color, $underline: false) {
+  color: $color;
+  text-decoration: if($underline, underline, none);
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: $hover-color;
+    @if $underline {
+      text-decoration: none; // Убираем подчеркивание при наведении, если оно было
+    }
+  }
+
+  &:active {
+    transform: translateY(1px); // Легкий эффект нажатия
+  }
+}
