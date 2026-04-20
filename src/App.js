@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 import './scss/main.scss';
 
@@ -13,6 +14,7 @@ import Auth from './pages/Auth/';
 import React from 'react';
 import Profile from './pages/Profile';
 import Roomspg from './pages/Rooms';
+import RoomPage from './pages/RoomPage';
 
 function App() {
   // Проверяем куки при загрузке: если токен есть, значит залогинены
@@ -21,20 +23,10 @@ function App() {
   const location = useLocation(); // получаем текущий путь
   const isHome = location.pathname === '/';
 
-  //для получения прокрутки для размытия под шапкой
-  const [isScrolled, setIsScrolled] = React.useState(false);
-
-  React.useEffect(() => {
-    const handleScroll = () => {
-      // Эффект появляется после прокрутки на 50px
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const onLoginSuccess = (token) => {
-    Cookies.set('token', token, { expires: 7 }); // Сохраняем на неделю
+    localStorage.setItem('token', token);
+    Cookies.set('token', token, { expires: 7, path: '/' }); // Сохраняем на неделю
+    console.log(Cookies.get('token'));
     setIsAuth(true); // Меняем состояние, чтобы Header обновился
   };
 
@@ -55,12 +47,14 @@ function App() {
             element={isAuth ? <Profile onLogout={logout} /> : <Navigate to='/auth' />}
           />
           <Route path='/rooms' element={<Roomspg />} />
+          <Route path='/room/:roomId' element={<RoomPage isAuth={isAuth} />} />
           {/* <Route 
   path='/auth' 
   element={isAuth ? <Navigate to="/" /> : <Auth onLoginSuccess={login} />} 
 /> */}
         </Routes>
       </div>
+      <Footer />
     </div>
   );
 }

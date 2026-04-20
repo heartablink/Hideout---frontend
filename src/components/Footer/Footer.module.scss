@@ -1,0 +1,142 @@
+@use '../../scss/abstracts/variables' as v;
+@use '../../scss/abstracts/mixins' as m;
+
+.footer {
+  background-color: #0a0a0a; // Очень темный, почти черный
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 80px 0 30px 0;
+  color: white;
+  margin-top: auto; // Чтобы футер всегда был внизу, если контента мало
+}
+
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 60px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+
+  h4 {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: v.$pink-color; // Акцентный заголовок
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255, 255, 255, 0.6);
+
+      svg {
+        fill: rgba(255, 255, 255, 0.4);
+        height: 16px;
+      }
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: white;
+    }
+  }
+}
+
+.brand {
+  .logoLink {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+
+    .logo {
+      height: 40px;
+      width: auto;
+    }
+
+    .brandName {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: white;
+      letter-spacing: 1px;
+    }
+  }
+
+  .slogan {
+    color: rgba(255, 255, 255, 0.4);
+    line-height: 1.6;
+    max-width: 280px;
+    font-size: 0.95rem;
+  }
+}
+
+.socialIcons {
+  display: flex;
+  gap: 15px;
+
+  a {
+    display: inline-block;
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      background: rgba(255, 0, 255, 0.1); // Розовый оттенок при ховере
+      border-color: v.$pink-color;
+      color: white;
+    }
+  }
+}
+
+.bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.3);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .legal {
+    display: flex;
+    gap: 25px;
+
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+}

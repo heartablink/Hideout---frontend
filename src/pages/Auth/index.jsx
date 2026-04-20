@@ -61,7 +61,6 @@ const LoginForm = ({ onLoginSuccess }) => {
         navigate('/'); // Теперь это сработает, так как форма не перезагрузится
       }
     } catch (err) {
-      // Выводим текст ошибки с бэкенда (например, "Неверный пароль")
       setError(err.response?.data?.message);
     }
   };

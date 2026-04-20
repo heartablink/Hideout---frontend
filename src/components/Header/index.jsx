@@ -32,9 +32,11 @@ const Header = ({ isAuth }) => {
         </ul>
       </div>
       {isAuth ? (
-        <a>
-          <Link to='/profile'>Профиль</Link>
-        </a>
+        <div className={styles.profbox}>
+          <a>
+            <Link to='/profile'>Профиль</Link>
+          </a>
+        </div>
       ) : (
         <div className={styles.authBox}>
           <Link to='/Auth'>

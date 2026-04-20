@@ -1,0 +1,151 @@
+@use '../../scss//abstracts//variables' as v;
+
+.modaloverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); // Сделал чуть темнее для акцента
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.content {
+  background: #f4f4f4; // Легкий серый цвет
+  width: 500px;
+  max-height: 90vh; // Чтобы не вылезало за экран по высоте
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  position: relative; // Нужно для позиционирования крестика
+  color: #333;
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #666;
+  line-height: 1;
+
+  &:hover {
+    color: #000;
+  }
+}
+
+.slotsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); // 4 колонки со временем
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.slotBtn {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: #e0e0e0;
+  }
+
+  &.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: #f9f9f9;
+  }
+}
+.slotBtn {
+  // твои старые стили...
+  transition: all 0.2s;
+
+  &.selected {
+    background-color: #5d5d5d; // Тот же цвет, что и у активной даты
+    color: white;
+    border-color: #333;
+    transform: scale(1.05); // Небольшое увеличение для акцента
+  }
+}
+
+.confirmWrapper {
+  text-align: center;
+  padding: 20px 10px;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+  p {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+}
+
+.confirmDetails {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.confirmActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.backButton {
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.paymentOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  input[type='radio'] {
+    accent-color: v.$secondary-color; // Цвет кружка (подбери под свой бренд)
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.radioText {
+  font-size: 14px;
+}

@@ -1,3 +1,160 @@
-.wrapper {
-  margin: 100px;
+@use '../../scss/abstracts/variables' as v;
+
+.root {
+  min-height: 100vh;
+  padding-top: 120px; // Отступ под фиксированную шапку
+  background: #050505;
+  color: white;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 40px;
+  padding: 0 20px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.userCard {
+  background: #111;
+  padding: 40px;
+  border-radius: 24px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: sticky;
+  top: 120px;
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(45deg, v.$pink-color, #7000ff);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+  }
+
+  h3 {
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+  }
+  p {
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 30px;
+  }
+
+  .stats {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 20px;
+    margin-bottom: 30px;
+
+    .statItem {
+      display: flex;
+      justify-content: space-between;
+      span {
+        color: rgba(255, 255, 255, 0.5);
+      }
+      strong {
+        color: v.$pink-color;
+      }
+    }
+  }
+}
+
+.logoutBtn {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ff4d4d;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background: rgba(255, 77, 77, 0.1);
+    border-color: #ff4d4d;
+  }
+}
+
+.main {
+  h2 {
+    margin-bottom: 30px;
+    font-size: 2rem;
+  }
+}
+
+.bookingCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateX(10px);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .bookingInfo {
+    h4 {
+      margin-bottom: 5px;
+      font-size: 1.1rem;
+    }
+    p {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.9rem;
+    }
+  }
+
+  .status {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+
+    &[data-status='confirmed'] {
+      background: rgba(0, 255, 150, 0.1);
+      color: #00ff96;
+    }
+  }
+}
+
+.empty {
+  text-align: center;
+  padding: 60px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 20px;
+  border: 2px dashed rgba(255, 255, 255, 0.05);
+
+  button {
+    margin-top: 20px;
+    padding: 10px 25px;
+    background: v.$pink-color;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.loading {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: v.$pink-color;
 }
