@@ -86,7 +86,6 @@ const BookingModal = ({ roomId, onClose }) => {
       navigate('/auth', { state: { from: window.location.pathname } });
       return;
     }
-
     //не бронируем сразу, а показываем вопрос о подтверждении
     setIsConfirming(true);
 
@@ -122,7 +121,16 @@ const BookingModal = ({ roomId, onClose }) => {
         },
       );
 
-      alert('Бронирование успешно!');
+      // ЕСЛИ ОПЛАТА КАРТОЙ:
+      if (paymentMethod === 'external' && response.data.confirmationUrl) {
+        // Перенаправляем пользователя на сайт ЮKassa
+        window.location.href = response.data.confirmationUrl;
+        return; // Дальше код не пойдет, страница перезагрузится
+      }
+
+      // ЕСЛИ ОПЛАТА С ДЕПОЗИТА:
+      alert('Бронирование успешно оплачено с депозита!');
+      onClose();
       onClose();
     } catch (err) {
       alert(err.response?.data?.message || 'Ошибка при бронировании');
@@ -268,7 +276,7 @@ const BookingModal = ({ roomId, onClose }) => {
                 {Cookies.get('token') ? 'Забронировать' : 'Войти и забронировать'}
               </Button>
               {Cookies.get('token') && (
-                <Button onClick={handleMainAction}>Купить пакет коинсов</Button>
+                <Button onClick={handleMainAction}>Купить пакет хайдов</Button>
               )}
             </div>
           </>

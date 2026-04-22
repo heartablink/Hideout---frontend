@@ -52,6 +52,7 @@ function App() {
   path='/auth' 
   element={isAuth ? <Navigate to="/" /> : <Auth onLoginSuccess={login} />} 
 /> */}
+          <Route path='/booking/success/:bookingId' element={<Roomspg />} />
         </Routes>
       </div>
       <Footer />
