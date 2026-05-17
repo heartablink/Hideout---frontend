@@ -11,6 +11,16 @@
     background-color: v.$secondary-color;
   }
 
+  &.greenBtn {
+    background: #4ecca3;
+    color: #1a1a1d;
+    font-size: 14px;
+    height: min-content;
+    &:hover {
+      background: #3ba585;
+    }
+  }
+
   // Модификаторы для прозрачных кнопок
   &.simple,
   &.titlebtn,

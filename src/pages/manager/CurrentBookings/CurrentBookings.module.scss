@@ -42,3 +42,119 @@
     transition: background-color 0.2s ease;
   }
 }
+
+.reBtn {
+  background: #b8f79b;
+  color: #1a1a1d;
+  width: min-content;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:hover {
+    background: #3ba585;
+  }
+}
+
+.loading {
+  text-align: center;
+  font-size: 20px;
+}
+
+.branchAddress {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 16px;
+
+  strong {
+    color: #4ecca3;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.actionsCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.warningIcon {
+  font-size: 20px;
+  cursor: default;
+  animation: pulse 1s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(255, 100, 0, 0.8));
+}
+
+.warningWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover .tooltip {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0; // прижимаем к правому краю иконки
+  left: auto; // убираем left: 50%
+  transform: translateY(4px); // только вертикальный сдвиг
+  background: #1e1e1e;
+  border: 1px solid rgba(255, 140, 0, 0.4);
+  color: #ffa040;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 8px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  z-index: 100;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+
+  // Стрелочка — теперь справа
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 6px; // совпадает с right: 0 + небольшой отступ
+    left: auto;
+    transform: none;
+    border: 6px solid transparent;
+    border-top-color: rgba(255, 140, 0, 0.4);
+  }
+}
+
+.completeBtn {
+  background: #fc90c2;
+  color: #1a1a1d;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #fc90c2a4;
+  }
+}

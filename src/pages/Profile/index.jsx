@@ -186,6 +186,15 @@ const Profile = ({ onLogout }) => {
                           {b.status}
                         </span>
                       </td>
+                      <td>
+                        {b.status == 'Оплачено' ||
+                        b.status == 'Ожидает оплаты (онлайн)' ||
+                        b.status == 'Ожидает оплаты (наличные)' ? (
+                          <button className={styles.deleteBtn}>Отменить</button>
+                        ) : (
+                          ''
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

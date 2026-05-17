@@ -19,7 +19,7 @@ import Roomspg from './pages/Rooms';
 import RoomPage from './pages/RoomPage';
 
 import ManagerDashboard from './pages/manager/ManagerDashboard';
-import ManagerBoard from './pages/manager/ManagerBoard';
+import ShiftPage from './pages/manager/ShiftPage';
 import CurrentBookgns from './pages/manager/CurrentBookings';
 
 function App() {
@@ -138,7 +138,7 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<ManagerBoard />} />
+            <Route index element={<ShiftPage />} />
             <Route path='currentBookings' element={<CurrentBookgns />} />
             {/*             <Route path='prices' element={<ManagerPrices />} /> */}
           </Route>

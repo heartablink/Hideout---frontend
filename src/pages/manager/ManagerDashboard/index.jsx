@@ -21,7 +21,7 @@ const ManagerDashboard = () => {
           <ul className={styles.menuList}>
             <li>
               <Link to='/manager' className={`${styles.menuLink} ${isActive('/manager')}`}>
-                Обзор
+                Смена
               </Link>
             </li>
             <li>

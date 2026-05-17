@@ -8,6 +8,7 @@ const Button = ({ children, variant, onClick }) => {
         [styles.simple]: variant === 'simple',
         [styles.titlebtn]: variant === 'titlebtn',
         [styles.titlebtn_active]: variant === 'titlebtn_active',
+        [styles.greenbtn]: variant === 'greenbtn',
       })}
       onClick={onClick}
     >

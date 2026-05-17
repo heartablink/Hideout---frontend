@@ -37,3 +37,62 @@
     color: #000;
   }
 }
+
+.confirmActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  justify-content: center;
+
+  .confirmButton {
+    padding: 12px 28px;
+    background-color: #4ecca3;
+    color: #1a1a1d;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background-color: #3ba585;
+    }
+  }
+
+  .cancelButton {
+    padding: 12px 28px;
+    background-color: transparent;
+    color: #666;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: #999;
+      color: #333;
+    }
+  }
+}
+.completeConfirmBtn {
+  padding: 12px 28px;
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: #cc0000;
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

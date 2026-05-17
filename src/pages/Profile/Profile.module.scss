@@ -3,6 +3,38 @@
   margin: 0 auto;
   padding: 40px 20px;
   color: #fff;
+  button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .editBtn {
+    background: #4ecca3;
+    color: #1a1a1d;
+    &:hover {
+      background: #3ba585;
+    }
+  }
+
+  .deleteBtn {
+    background: #ff4d4d;
+    color: white;
+    &:hover {
+      background: #cc0000;
+    }
+    .logoutBtn {
+      background: #444;
+      color: white;
+      &:hover {
+        background: #666;
+      }
+    }
+  }
 }
 
 .profileGrid {
@@ -83,40 +115,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-
-  button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .editBtn {
-    background: #4ecca3;
-    color: #1a1a1d;
-    &:hover {
-      background: #3ba585;
-    }
-  }
-
-  .deleteBtn {
-    background: #ff4d4d;
-    color: white;
-    &:hover {
-      background: #cc0000;
-    }
-  }
-
-  .logoutBtn {
-    background: #444;
-    color: white;
-    &:hover {
-      background: #666;
-    }
-  }
 }
 
 .fullWidth {
