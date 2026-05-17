@@ -104,10 +104,10 @@ const BookingModal = ({ roomId, onClose }) => {
     if (hoursCount === 0) return alert('Выберите время');
 
     try {
-      const url =
-        paymentMethod === 'deposit'
-          ? 'http://localhost:4444/api/bookings/create-deposit'
-          : 'http://localhost:4444/api/bookings/create-external';
+      let url = '';
+      if (paymentMethod === 'deposit') url = 'http://localhost:4444/api/bookings/create-deposit';
+      if (paymentMethod === 'external') url = 'http://localhost:4444/api/bookings/create-external';
+      if (paymentMethod === 'cash') url = 'http://localhost:4444/api/bookings/create-cash';
 
       const response = await axios.post(
         url,
@@ -129,7 +129,9 @@ const BookingModal = ({ roomId, onClose }) => {
       }
 
       // ЕСЛИ ОПЛАТА С ДЕПОЗИТА:
-      alert('Бронирование успешно оплачено с депозита!');
+      if (paymentMethod === 'deposit') alert('Бронирование успешно оплачено с депозита!');
+      if (paymentMethod === 'cash') alert('Бронирование успешно создано!');
+      navigate('/profile');
       onClose();
       onClose();
     } catch (err) {
@@ -255,6 +257,19 @@ const BookingModal = ({ roomId, onClose }) => {
                             onChange={(e) => setPaymentMethod(e.target.value)}
                           />
                           <span className={styles.radioText}>Оплата картой онлайн</span>
+                        </label>
+
+                        <label className={styles.radioLabel}>
+                          <input
+                            type='radio'
+                            name='payment'
+                            value='cash'
+                            checked={paymentMethod === 'cash'}
+                            onChange={(e) => setPaymentMethod(e.target.value)}
+                          />
+                          <span className={styles.radioText}>
+                            Оплата наличными перед бронированием
+                          </span>
                         </label>
                         <span>ИТОГО:</span>
                         <span>

@@ -4,6 +4,8 @@ import Button from '../../components/Button';
 import { PatternFormat } from 'react-number-format';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import EyePass from '../../assets/svg/EyePass';
+import NoEyePass from '../../assets/svg/NoEyePass';
 
 const Auth = ({ onLoginSuccess }) => {
   React.useEffect(() => {
@@ -28,7 +30,11 @@ const Auth = ({ onLoginSuccess }) => {
           </Button>
         </div>
         <div className={root.formContent}>
-          {formType === 'login' ? <LoginForm onLoginSuccess={onLoginSuccess} /> : <RegisterForm />}
+          {formType === 'login' ? (
+            <LoginForm onLoginSuccess={onLoginSuccess} />
+          ) : (
+            <RegisterForm onLoginSuccess={onLoginSuccess} />
+          )}
         </div>
       </div>
     </div>
@@ -40,8 +46,13 @@ const LoginForm = ({ onLoginSuccess }) => {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
 
+  const [isVisible, setIsVisible] = React.useState(false);
+
   const navigate = useNavigate(); //Инициализируем навигацию
 
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
   //обрабатывать отправку
   const handleSubmit = async (e) => {
     //отменяет действия браузера по умолчанию
@@ -81,13 +92,31 @@ const LoginForm = ({ onLoginSuccess }) => {
         }}
       />
       <p>Пароль</p>
-      <input
-        type='password'
-        value={password} // Привязываем значение
-        onChange={(e) => setPassword(e.target.value)} // Обновляем стейт
-        className={root.input}
-        required
-      />
+      <div className={root.passBlock}>
+        <input
+          className={root.passBox}
+          type={isVisible ? 'text' : 'password'}
+          value={password} // Привязываем значение
+          onChange={(e) => setPassword(e.target.value)} // Обновляем стейт
+          className={root.input}
+          required
+        />
+        <button
+          type='button'
+          onClick={toggleVisibility}
+          style={{
+            position: 'absolute',
+            right: '5px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          {isVisible ? <NoEyePass /> : <EyePass />}
+        </button>
+      </div>
       <Button type='submit'>Войти в аккаунт</Button>
       {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
     </form>
@@ -102,6 +131,12 @@ const RegisterForm = ({ onLoginSuccess }) => {
   const [name, setName] = React.useState('');
   const [surname, setSurname] = React.useState('');
   const [error, setError] = React.useState('');
+
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
 
   const OnHandleSubmit = async (e) => {
     e.preventDefault();
@@ -122,8 +157,33 @@ const RegisterForm = ({ onLoginSuccess }) => {
         navigate('/');
       }
     } catch (err) {
-      // Выводим текст ошибки с бэкенда (например, "Неверный пароль")
-      setError(err.response?.data?.message);
+      console.error(err); // для отладки
+      let errorMessage = 'Ошибка регистрации. Попробуйте позже.';
+
+      if (err.response && err.response.data) {
+        const data = err.response.data;
+
+        // 1. Если пришёл массив ошибок (как у вас на скриншоте)
+        if (Array.isArray(data) && data.length > 0 && data[0].msg) {
+          errorMessage = data[0].msg;
+        }
+        // 2. Если пришёл объект с полем msg
+        else if (data.msg) {
+          errorMessage = data.msg;
+        }
+        // 3. Если пришёл объект с полем message
+        else if (data.message) {
+          errorMessage = data.message;
+        }
+        // 4. Если пришла просто строка
+        else if (typeof data === 'string') {
+          errorMessage = data;
+        }
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+
+      setError(errorMessage);
     }
   };
   return (
@@ -142,13 +202,31 @@ const RegisterForm = ({ onLoginSuccess }) => {
         }}
       />
       <p>Пароль</p>
-      <input
-        type='password'
-        value={password} // Привязываем значение
-        onChange={(e) => setPassword(e.target.value)} // Обновляем стейт
-        className={root.input}
-        required
-      />
+      <div className={root.passBlock}>
+        <input
+          className={root.passBox}
+          type={isVisible ? 'text' : 'password'}
+          value={password} // Привязываем значение
+          onChange={(e) => setPassword(e.target.value)} // Обновляем стейт
+          className={root.input}
+          required
+        />
+        <button
+          type='button'
+          onClick={toggleVisibility}
+          style={{
+            position: 'absolute',
+            right: '5px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          {isVisible ? <NoEyePass /> : <EyePass />}
+        </button>
+      </div>
       <p>Имя</p>
       <input
         value={name} // Привязываем значение

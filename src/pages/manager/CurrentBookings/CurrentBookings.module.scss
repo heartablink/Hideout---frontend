@@ -1,0 +1,44 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  th {
+    text-align: left;
+    padding: 10px;
+    color: #888;
+  }
+  td {
+    padding: 10px;
+    border-top: 1px solid #333;
+  }
+
+  a {
+    span {
+      text-decoration: underline;
+    }
+  }
+
+  // Будущие/активные бронирования
+  .rowFuture {
+    background-color: rgba(209, 83, 209, 0.15); // лёгкий розовый
+  }
+
+  // Отменённые бронирования – серый текст
+  .rowCanceled {
+    color: #888;
+    background-color: transparent;
+    td {
+      color: inherit; // чтобы цвет применялся ко всем ячейкам
+    }
+    a {
+      span {
+        color: #888;
+      }
+    }
+  }
+
+  // При наведении на любую строку
+  tbody tr:hover {
+    background-color: rgba(78, 204, 163, 0.12); // зеленоватый оттенок
+    transition: background-color 0.2s ease;
+  }
+}

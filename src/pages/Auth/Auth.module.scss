@@ -36,14 +36,56 @@
       margin: 0; // Сбрасываем дефолтные отступы параграфов
       color: white; // Если фон темный
     }
-
     input {
+      width: 100%; // ← растягиваем на всю ширину
+      box-sizing: border-box;
       padding: 12px;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.05) !important;
       color: white;
       margin-bottom: 10px;
+    }
+    // дополнительно для автозаполнения
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      transition: background-color 5000s ease-in-out 0s;
+      -webkit-text-fill-color: white !important;
+      caret-color: white;
+    }
+
+    .passBlock {
+      position: relative; // чтобы кнопка позиционировалась внутри
+      width: 100%;
+
+      .passBox {
+        width: 100%;
+        padding-right: 40px; // чтобы текст не налезал на кнопку
+        box-sizing: border-box;
+      }
+
+      button {
+        position: absolute;
+        right: 12px; // отступ от правого края
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #aaa;
+        transition: color 0.2s;
+        padding-bottom: 10px;
+
+        &:hover {
+          color: white;
+        }
+      }
     }
   }
 }

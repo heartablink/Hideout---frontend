@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { initAsyncCompiler } from 'sass';
 import Button from '../Button';
 
-const Header = ({ isAuth }) => {
+const Header = ({ isAuth, userRole }) => {
   return (
     <div className={styles.root}>
       <Link to='/'>
@@ -28,6 +28,7 @@ const Header = ({ isAuth }) => {
           <li>
             <a>Адреса</a>
           </li>
+          {userRole === 'Менеджер' && <Link to='/manager'>Управление</Link>}
           <li></li>
         </ul>
       </div>
