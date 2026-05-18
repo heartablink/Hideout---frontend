@@ -7,6 +7,8 @@ import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom'; // Для перехода на логин
 import Cookies from 'js-cookie';
 
+import NotificationModal from '../../modals/NotificationModal';
+
 const BookingModal = ({ roomId, onClose }) => {
   const navigate = useNavigate();
 
@@ -15,6 +17,13 @@ const BookingModal = ({ roomId, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [selectedSlots, setSelectedSlots] = useState([]);
 
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    type: 'success',
+    title: '',
+    message: '',
+  });
+
   //если да, то рендерится окно подтверждения бронирования
   const [isConfirming, setIsConfirming] = useState(false);
 
@@ -22,6 +31,16 @@ const BookingModal = ({ roomId, onClose }) => {
   const [roomInfo, setRoomInfo] = useState(null);
   const [userInfo, setUserInfo] = useState({ balance: 0, discount: 0 });
   const [paymentMethod, setPaymentMethod] = useState('deposit'); // 'deposit' | 'external'
+
+  const showNotification = (type, title, message) => {
+    setNotification({ isOpen: true, type, title, message });
+  };
+
+  const closeNotification = () => {
+    setNotification({ isOpen: false });
+    navigate('/profile');
+    onClose();
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,7 +100,7 @@ const BookingModal = ({ roomId, onClose }) => {
     const cookie = Cookies.get('token');
 
     // Если не залогинен — отправляем на вход
-    if (!cookie) {
+    if (!token) {
       // Можно передать в state текущий URL, чтобы вернуться после логина
       navigate('/auth', { state: { from: window.location.pathname } });
       return;
@@ -129,13 +148,12 @@ const BookingModal = ({ roomId, onClose }) => {
       }
 
       // ЕСЛИ ОПЛАТА С ДЕПОЗИТА:
-      if (paymentMethod === 'deposit') alert('Бронирование успешно оплачено с депозита!');
-      if (paymentMethod === 'cash') alert('Бронирование успешно создано!');
-      navigate('/profile');
-      onClose();
-      onClose();
+      if (paymentMethod === 'deposit')
+        showNotification('success', 'Готово', 'Бронирование успешно оплачено с депозита!');
+      if (paymentMethod === 'cash')
+        showNotification('success', 'Готово', 'Бронирование успешно создано!');
     } catch (err) {
-      alert(err.response?.data?.message || 'Ошибка при бронировании');
+      showNotification('error', 'Ошибка', 'Ошибка при бронировании');
     }
   };
 
@@ -323,6 +341,14 @@ const BookingModal = ({ roomId, onClose }) => {
           </>
         )}
       </div>
+
+      <NotificationModal
+        isOpen={notification.isOpen}
+        onClose={closeNotification}
+        type={notification.type}
+        title={notification.title}
+        message={notification.message}
+      />
     </div>
   );
 };

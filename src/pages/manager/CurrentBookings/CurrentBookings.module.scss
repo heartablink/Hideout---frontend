@@ -79,6 +79,16 @@
   justify-content: space-between;
   margin-bottom: 8px;
 }
+.rowHeader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 10px;
+  p {
+    color: #888;
+  }
+}
 
 .actionsCell {
   display: flex;

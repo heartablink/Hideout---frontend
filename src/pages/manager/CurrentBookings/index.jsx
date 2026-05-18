@@ -177,9 +177,12 @@ const CurrentBookgns = () => {
       <section className={`${styles.card} ${styles.fullWidth}`}>
         <h3>Бронирования на сегодня</h3>
         <div className={styles.header}>
-          <button className={styles.reBtn} onClick={() => refresh()}>
-            Обновить
-          </button>
+          <div className={styles.rowHeader}>
+            <button className={styles.reBtn} onClick={() => refresh()}>
+              Обновить
+            </button>
+            <p>Всего бронирований: {dataBooking.length}</p>
+          </div>
           {dataBooking.length > 0 && (
             <p className={styles.branchAddress}>
               📍 Филиал: <strong>{dataBooking[0].branchAddress}</strong>

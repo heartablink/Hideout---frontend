@@ -7,12 +7,25 @@ import { Link } from 'react-router-dom';
 import styles from './Profile.module.scss';
 import { useState, useEffect } from 'react';
 
+import ConfirmModal from '../../modals/ConfirmAction';
+import NotificationModal from '../../modals/NotificationModal';
+
 const Profile = ({ onLogout }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [levelLoyalty, setLevelLoyalty] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [bookings, setBookings] = useState([]); // история бронирований
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [cancelBooking, setCancelBooking] = useState(null);
+  const [isCancelLoading, setIsCancelLoading] = useState(false);
+  const [cancelBookingInfo, setCancelBookingInfo] = useState(null); // для текста модалки
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    type: 'success',
+    title: '',
+    message: '',
+  });
 
   const fetchClientData = async () => {
     try {
@@ -67,6 +80,40 @@ const Profile = ({ onLogout }) => {
     navigate('/'); // Опционально: редирект на главную после выхода
   };
 
+  const handleCancelClick = async (booking) => {
+    setCancelBooking(booking.id);
+    setCancelBookingInfo({
+      date: booking.date,
+      timeBegin: booking.timeBegin,
+      timeEnd: booking.timeEnd,
+    });
+    setIsCancelModalOpen(true);
+  };
+
+  const cancelMessage = cancelBookingInfo
+    ? `Вы действительно хотите отменить бронирование на ${new Date(cancelBookingInfo.date).toLocaleDateString()} с ${cancelBookingInfo.timeBegin?.slice(0, 5)} до ${cancelBookingInfo.timeEnd?.slice(0, 5)}?`
+    : 'Вы действительно хотите отменить бронирование?';
+
+  const handleCancelConfirm = async () => {
+    try {
+      setIsCancelLoading(true);
+      const token = localStorage.getItem('token');
+      await axios.post(
+        `http://localhost:4444/api/bookings/${cancelBooking}/cancel`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+      showNotification('success', 'Готово', 'Бронирование успешно отменено');
+      fetchBookings(); // обновить список бронирований
+      setIsCancelModalOpen(false);
+    } catch (err) {
+      console.error('Ошибка отмены:', err);
+      showNotification('error', 'Ошибка', 'Не удалось отменить бронирование');
+    } finally {
+      setIsCancelLoading(false);
+    }
+  };
+
   //для красивого вывода номера телефона ЗАТЕМ ВЫНЕСТИ В ОТДЕЛЬНУЮ ФУНКЦИЮ
   const formatPhone = (phone) => {
     // если phone — null, undefined или пустая строка — вернём прочерк или пусто
@@ -84,6 +131,15 @@ const Profile = ({ onLogout }) => {
     return phone;
   };
 
+  const formatHours = (n) => {
+    const abs = Math.abs(n) % 100;
+    const lastTwo = abs % 10;
+    if (abs >= 11 && abs <= 19) return `${n} часов`;
+    if (lastTwo === 1) return `${n} час`;
+    if (lastTwo >= 2 && lastTwo <= 4) return `${n} часа`;
+    return `${n} часов`;
+  };
+
   // Загрузка или отсутствие пользователя
   if (isLoading) {
     return (
@@ -93,6 +149,13 @@ const Profile = ({ onLogout }) => {
       </div>
     );
   }
+
+  const showNotification = (type, title, message) => {
+    setNotification({ isOpen: true, type, title, message });
+  };
+
+  const closeNotification = () => setNotification({ isOpen: false });
+
   if (user) {
     return (
       <div className={styles.container}>
@@ -140,8 +203,8 @@ const Profile = ({ onLogout }) => {
           {/* Правая колонка */}
           <div className={styles.column}>
             <section className={`${styles.card} ${styles.totalTime}`}>
-              <h3>Сыграно времени</h3>
-              <div className={styles.timeValue}>{user.totalHours} часа</div>
+              <h3>Всего сыграно времени</h3>
+              <div className={styles.timeValue}>{formatHours(user.totalHours)}</div>
             </section>
 
             <section className={`${styles.card} ${styles.actions}`}>
@@ -190,7 +253,9 @@ const Profile = ({ onLogout }) => {
                         {b.status == 'Оплачено' ||
                         b.status == 'Ожидает оплаты (онлайн)' ||
                         b.status == 'Ожидает оплаты (наличные)' ? (
-                          <button className={styles.deleteBtn}>Отменить</button>
+                          <button className={styles.deleteBtn} onClick={() => handleCancelClick(b)}>
+                            Отменить
+                          </button>
                         ) : (
                           ''
                         )}
@@ -234,6 +299,25 @@ const Profile = ({ onLogout }) => {
             </div>
           </section>
         </div>
+
+        {/* МОДАЛКА ПОДТВЕРЖДЕНИЯ */}
+        <ConfirmModal
+          isOpen={isCancelModalOpen}
+          onClose={() => setIsCancelModalOpen(false)}
+          onConfirm={handleCancelConfirm}
+          title='Отмена бронирования'
+          message={cancelMessage}
+          confirmText='Да, отменить'
+          cancelText='Отмена'
+          isLoading={isCancelLoading}
+        />
+        <NotificationModal
+          isOpen={notification.isOpen}
+          onClose={closeNotification}
+          type={notification.type}
+          title={notification.title}
+          message={notification.message}
+        />
       </div>
 
       // <div className={style.wrapper}>

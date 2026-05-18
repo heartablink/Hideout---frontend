@@ -38,7 +38,7 @@ const ManagerDashboard = () => {
                 to='/manager/shifts'
                 className={`${styles.menuLink} ${isActive('/manager/shifts')}`}
               >
-                Управление сменой
+                Покупка пакетов хайдов
               </Link>
             </li>
             <li>
@@ -46,13 +46,7 @@ const ManagerDashboard = () => {
                 to='/manager/transactions'
                 className={`${styles.menuLink} ${isActive('/manager/transactions')}`}
               >
-                Аудит транзакций
-              </Link>
-              <Link
-                to='/manager/packages'
-                className={`${styles.menuLink} ${isActive('/manager/packages')}`}
-              >
-                Продажа пакетов
+                Создание бронирования
               </Link>
             </li>
           </ul>
