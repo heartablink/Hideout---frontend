@@ -1,13 +1,13 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import styles from './ManagerDashboard.module.scss';
+import styles from './AdminDashboard.module.scss';
 
 const ManagerDashboard = () => {
   const location = useLocation();
 
   // Функция для подсветки активного пункта меню
   const isActive = (path) => {
-    if (path === '/manager') {
-      return location.pathname === '/manager' ? styles.active : '';
+    if (path === '/admin') {
+      return location.pathname === '/admin' ? styles.active : '';
     }
     return location.pathname.startsWith(path) ? styles.active : '';
   };
@@ -20,31 +20,31 @@ const ManagerDashboard = () => {
         <nav>
           <ul className={styles.menuList}>
             <li>
-              <Link to='/manager' className={`${styles.menuLink} ${isActive('/manager')}`}>
-                Аналитика
+              <Link to='/admin' className={`${styles.menuLink} ${isActive('/admin')}`}>
+                Смена
               </Link>
             </li>
             <li>
               <Link
-                to='/manager/ana'
-                className={`${styles.menuLink} ${isActive('/manager/currentBookings')}`}
+                to='/admin/currentBookings'
+                className={`${styles.menuLink} ${isActive('/admin/currentBookings')}`}
               >
-                Анализ
+                Текущие бронирования
               </Link>
             </li>
 
             <li>
               <Link
-                to='/manager/packageSale'
-                className={`${styles.menuLink} ${isActive('/manager/packageSale')}`}
+                to='/admin/packageSale'
+                className={`${styles.menuLink} ${isActive('/admin/packageSale')}`}
               >
                 Продажа пакетов хайдов
               </Link>
             </li>
             <li>
               <Link
-                to='/manager/transactions'
-                className={`${styles.menuLink} ${isActive('/manager/transactions')}`}
+                to='/admin/transactions'
+                className={`${styles.menuLink} ${isActive('/admin/transactions')}`}
               >
                 Создание бронирования
               </Link>

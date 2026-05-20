@@ -1,168 +1,324 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 40px 20px 80px;
   color: #fff;
+}
+
+.title {
+  font-size: 1.6rem;
+  margin-bottom: 28px;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════
+   ВЕРХНЯЯ ЗОНА: герой + боковая сетка
+   ═══════════════════════════════════════ */
+.topZone {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Большой блок лояльности (левый) */
+.loyaltyHero {
+  background: linear-gradient(160deg, #1e1a2e 0%, #1a1a1d 60%, #1a2a1e 100%);
+  border: 1px solid #2e2e3a;
+  border-radius: 20px;
+  padding: 32px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(78, 204, 163, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+}
+
+.heroImage {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 24px rgba(78, 204, 163, 0.5));
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.heroLevelName {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 4px;
+  letter-spacing: 0.5px;
+}
+
+.heroSubtitle {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 20px;
+}
+
+.discountBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(78, 204, 163, 0.12);
+  color: #4ecca3;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(78, 204, 163, 0.25);
+  margin-bottom: 20px;
+}
+
+/* Прогресс-бар */
+.xpSection {
+  width: 100%;
+}
+
+.xpLabelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 7px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+
+  strong {
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+.xpBarTrack {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.xpBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ecca3, #6ee85a);
+  border-radius: 10px;
+  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.xpNumbers {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.xpHint {
+  margin-top: 10px;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+
+  strong {
+    color: #fff;
+  }
+}
+
+/* ═══════════════════════════════════════
+   Правая сетка (2×2)
+   ═══════════════════════════════════════ */
+.rightGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px;
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Базовая карточка */
+.card {
+  background: #1a1a1d;
+  border-radius: 16px;
+  padding: 20px 22px;
+  border: 1px solid #2a2a2a;
+
+  h3 {
+    margin: 0 0 12px;
+    color: #4ecca3;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+}
+
+/* Личные данные */
+.userInfo {
+  grid-column: 1 / -1; // на всю ширину правой сетки
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #1f1f1f;
+  font-size: 0.9rem;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  span {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.82rem;
+  }
+  strong {
+    color: #fff;
+  }
+}
+
+/* Депозит */
+.balance {
+  text-align: center;
+
+  .amount {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #4ecca3;
+    margin: 4px 0 14px;
+    letter-spacing: -0.5px;
+  }
+}
+
+.topUpBtn {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(78, 204, 163, 0.35);
+  border-radius: 10px;
+  background: rgba(78, 204, 163, 0.08);
+  color: #4ecca3;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(78, 204, 163, 0.16);
+    border-color: #4ecca3;
+  }
+}
+
+/* Время */
+.totalTime {
+  text-align: center;
+
+  .timeValue {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #4ecca3;
+    margin: 4px 0 0;
+    letter-spacing: -0.5px;
+  }
+
+  .timeLabel {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.25);
+    margin-top: 4px;
+  }
+}
+
+/* Управление */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
   button {
     width: 100%;
-    padding: 10px;
+    padding: 9px 12px;
     border: none;
-    border-radius: 8px;
-    font-weight: bold;
+    border-radius: 9px;
+    font-size: 0.83rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
   }
 
   .editBtn {
-    background: #4ecca3;
-    color: #1a1a1d;
+    background: rgba(78, 204, 163, 0.12);
+    color: #4ecca3;
+    border: 1px solid rgba(78, 204, 163, 0.25);
     &:hover {
-      background: #3ba585;
+      background: rgba(78, 204, 163, 0.22);
     }
   }
 
   .deleteBtn {
-    background: #ff4d4d;
-    color: white;
+    background: rgba(255, 77, 77, 0.08);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 77, 77, 0.2);
     &:hover {
-      background: #cc0000;
+      background: rgba(255, 77, 77, 0.16);
     }
-    .logoutBtn {
-      background: #444;
-      color: white;
-      &:hover {
-        background: #666;
-      }
+  }
+
+  .logoutBtn {
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
     }
   }
 }
 
-.profileGrid {
+/* ═══════════════════════════════════════
+   НИЖНЯЯ ЗОНА: транзакции + бронирования
+   ═══════════════════════════════════════ */
+.bottomZone {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); // 3 колонки
+  grid-template-columns: 420px 1fr;
   gap: 20px;
-  align-items: stretch;
+  margin-bottom: 20px;
 
-  @media (max-width: 992px) {
-    grid-template-columns: 1fr 1fr; // планшет: 2 колонки
-  }
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr; // телефон: 1 колонка
-  }
-  .userInfo {
-    height: 100%;
-    div {
-      margin-top: 20px;
-    }
-  }
-}
-// Контейнер для вертикального размещения блоков внутри колонки
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: 20px; // такой же, как у grid
-}
-
-.card {
-  background: #1a1a1d;
-  border-radius: 15px;
-  padding: 20px;
-  border: 1px solid #333;
-
-  h3 {
-    margin-bottom: 15px;
-    color: #4ecca3;
-    font-size: 1.1rem;
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
   }
 }
 
-.loyalty {
-  // grid-column: span 2; больше не нужно
-  height: 100%;
-  display: flex;
-  align-items: center;
-  background: linear-gradient(135deg, #1a1a1d 0%, #2d1b33 100%);
-
-  .heroSide img {
-    width: 100%;
-    margin-right: 40px;
-    filter: drop-shadow(0 0 10px #4ecca3);
-  }
-}
-
-.balance {
-  text-align: center;
-  .amount {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #4ecca3;
-    margin: 10px 0;
-  }
-}
-
-.totalTime {
-  text-align: center;
-  .timeValue {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #4ecca3;
-  }
-}
-
-// Секция с кнопками
-.actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
+/* Достижения — на всю ширину */
 .fullWidth {
-  grid-column: 1 / -1; // На всю ширину
+  // используется в дочерних компонентах напрямую через их обёртку
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  th {
-    text-align: left;
-    padding: 10px;
-    color: #888;
-  }
-  td {
-    padding: 10px;
-    border-top: 1px solid #333;
-  }
-}
-
-.statusPaid {
-  color: #4ecca3;
-  background: rgba(78, 204, 163, 0.1);
-  padding: 4px 8px;
-  border-radius: 5px;
-}
-
-.scrollList {
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.logItem,
-.xpItem {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #222;
-
-  .minus {
-    color: #ff4d4d;
-  }
-}
-
-.table {
-  a {
-    span {
-      text-decoration: underline;
-    }
-  }
+.loading {
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  padding: 60px 0;
 }

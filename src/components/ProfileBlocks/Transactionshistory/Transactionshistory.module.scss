@@ -1,0 +1,237 @@
+.wrapper {
+  background: #1a1a1d;
+  border-radius: 15px;
+  padding: 20px 24px;
+  border: 1px solid #2a2a2a;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Заголовок */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #4ecca3;
+  font-size: 1.1rem;
+}
+
+.count {
+  font-size: 0.78rem;
+  color: #444;
+  letter-spacing: 0.3px;
+}
+
+/* Мини-статистика */
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 10px;
+  padding: 12px 20px;
+  margin-bottom: 16px;
+}
+
+.statItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.statLabel {
+  font-size: 0.72rem;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statValue {
+  font-size: 1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.statDivider {
+  width: 1px;
+  height: 32px;
+  background: #2a2a2a;
+  margin: 0 20px;
+}
+
+.topupColor {
+  color: #4ecca3;
+}
+.debitColor {
+  color: #ff6b6b;
+}
+.refundColor {
+  color: #60a5fa;
+}
+
+/* Список транзакций */
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 4px;
+  border-bottom: 1px solid #1f1f22;
+  transition: background 0.15s ease;
+  border-radius: 8px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+    padding-left: 8px;
+  }
+}
+
+/* Иконка */
+.iconWrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.topupIcon {
+  background: rgba(78, 204, 163, 0.1);
+  border: 1px solid rgba(78, 204, 163, 0.2);
+}
+.debitIcon {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+}
+.refundIcon {
+  background: rgba(96, 165, 250, 0.1);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+/* Текстовая часть */
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0; // для text-overflow
+}
+
+.opName {
+  font-size: 0.88rem;
+  color: #ddd;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.comment {
+  font-size: 0.75rem;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.date {
+  font-size: 0.72rem;
+  color: #444;
+  margin-top: 1px;
+}
+
+/* Сумма */
+.amountWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.amount {
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.balance {
+  font-size: 0.7rem;
+  color: #444;
+  white-space: nowrap;
+}
+
+/* Пустое состояние */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 32px 0;
+  color: #444;
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}
+
+.emptyIcon {
+  font-size: 2.2rem;
+  filter: grayscale(1);
+  opacity: 0.3;
+}
+
+/* Кнопка "показать ещё" */
+.showMoreWrap {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+.showMoreBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 22px;
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 30px;
+  color: #666;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #4ecca3;
+    color: #4ecca3;
+    background: rgba(78, 204, 163, 0.05);
+  }
+}
+
+.arrow {
+  font-size: 0.95rem;
+}

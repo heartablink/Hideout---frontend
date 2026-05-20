@@ -18,9 +18,13 @@ import Profile from './pages/Profile';
 import Roomspg from './pages/Rooms';
 import RoomPage from './pages/RoomPage';
 
+import AdminDashboard from './pages/admin/AdminDashboard';
 import ManagerDashboard from './pages/manager/ManagerDashboard';
-import ShiftPage from './pages/manager/ShiftPage';
-import CurrentBookgns from './pages/manager/CurrentBookings';
+import ShiftPage from './pages/admin/ShiftPage';
+import CurrentBookgns from './pages/admin/CurrentBookings';
+import PackageSale from './pages/admin/PackageSale';
+
+import AnalyticsPage from './pages/manager/AnalyticsPage';
 
 function App() {
   // Проверяем куки при загрузке: если токен есть, значит залогинены
@@ -51,6 +55,7 @@ function App() {
       // Проверяем, не истёк ли токен
       if (payload.exp * 1000 > Date.now()) {
         setUserRole(payload.role);
+        console.log(payload.role);
         setIsAuth(true);
       } else {
         // Токен просрочен – сбрасываем авторизацию
@@ -128,18 +133,34 @@ function App() {
 /> */}
           <Route path='/booking/success/:bookingId' element={<Roomspg />} />
 
-          {/* Раздел управляющего только для manager */}
-          {/* Панель управляющего – только manager */}
+          {/* Раздел управляющего только для admin */}
+          {/* Панель управляющего – только admin */}
           <Route
-            path='/manager/*'
+            path='/admin/*'
             element={
-              <ProtectedRoute allowedRoles={['Менеджер']}>
-                <ManagerDashboard />
+              <ProtectedRoute allowedRoles={['Администратор']}>
+                <AdminDashboard />
               </ProtectedRoute>
             }
           >
             <Route index element={<ShiftPage />} />
             <Route path='currentBookings' element={<CurrentBookgns />} />
+            <Route path='packageSale' element={<PackageSale />} />
+          </Route>
+
+          {/* Раздел управляющего только для manager */}
+          {/* Панель управляющего – только manager */}
+          <Route
+            path='/manager/*'
+            element={
+              <ProtectedRoute allowedRoles={['Управляющий']}>
+                <ManagerDashboard />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<AnalyticsPage />} />
+            <Route path='currentBookings' element={<CurrentBookgns />} />
+            <Route path='packageSale' element={<PackageSale />} />
             {/*             <Route path='prices' element={<ManagerPrices />} /> */}
           </Route>
         </Routes>
