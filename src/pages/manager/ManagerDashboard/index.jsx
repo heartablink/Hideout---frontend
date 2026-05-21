@@ -26,19 +26,19 @@ const ManagerDashboard = () => {
             </li>
             <li>
               <Link
-                to='/manager/ana'
-                className={`${styles.menuLink} ${isActive('/manager/currentBookings')}`}
+                to='/manager/shift'
+                className={`${styles.menuLink} ${isActive('/manager/shift')}`}
               >
-                Анализ
+                Смена
               </Link>
             </li>
 
             <li>
               <Link
-                to='/manager/packageSale'
-                className={`${styles.menuLink} ${isActive('/manager/packageSale')}`}
+                to='/manager/rooms-managment'
+                className={`${styles.menuLink} ${isActive('/manager/rooms-managment')}`}
               >
-                Продажа пакетов хайдов
+                Управление комнатами
               </Link>
             </li>
             <li>
@@ -46,7 +46,7 @@ const ManagerDashboard = () => {
                 to='/manager/transactions'
                 className={`${styles.menuLink} ${isActive('/manager/transactions')}`}
               >
-                Создание бронирования
+                Все бронирования
               </Link>
             </li>
           </ul>

@@ -1,0 +1,560 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  color: #fff;
+}
+
+.pageTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+
+.loading {
+  text-align: center;
+  padding: 80px 0;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ══════════════════════════════════
+   ВЕРХНЯЯ ЗОНА
+══════════════════════════════════ */
+.topZone {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: start;
+  align-items: stretch;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Карточка сотрудника ── */
+.staffCard {
+  background: linear-gradient(160deg, #1a1f2e 0%, #1a1a1d 70%);
+  border: 1px solid #2a2a3a;
+  border-radius: 20px;
+  padding: 28px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.avatarWrap {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4ecca3 0%, #25316b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -1px;
+  box-shadow: 0 0 30px rgba(78, 204, 163, 0.3);
+}
+
+.roleBadge {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.4px;
+}
+
+.roleManager {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+}
+
+.roleAdmin {
+  background: rgba(78, 204, 163, 0.15);
+  color: #4ecca3;
+  border: 1px solid rgba(78, 204, 163, 0.3);
+}
+
+.staffName {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  text-align: center;
+}
+
+.staffPhone {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0 0 6px;
+}
+
+.staffBranch {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+.branchIcon {
+  font-size: 0.9rem;
+}
+
+/* Блок смены */
+.shiftBlock {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.shiftActive {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4ecca3;
+}
+
+.shiftDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ecca3;
+  box-shadow: 0 0 8px #4ecca3;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
+}
+
+.shiftInactive {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.shiftSince {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0;
+}
+
+.shiftBtnOpen {
+  width: 100%;
+  padding: 9px;
+  background: rgba(78, 204, 163, 0.12);
+  border: 1px solid rgba(78, 204, 163, 0.3);
+  border-radius: 9px;
+  color: #4ecca3;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: rgba(78, 204, 163, 0.22);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.shiftBtnClose {
+  width: 100%;
+  padding: 9px;
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.25);
+  border-radius: 9px;
+  color: #ff6b6b;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 107, 107, 0.2);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.logoutBtn {
+  width: 100%;
+  padding: 9px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
+  }
+}
+
+/* ── Правая колонка: статистика ── */
+.statsCol {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  height: 100%;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.statCard {
+  background: #1a1a1d;
+  border: 1px solid #2a2a2a;
+  border-radius: 14px;
+  padding: 50px 16px;
+  display: grid;
+  grid-template-rows: auto auto auto; // три строки: иконка, значение, подпись
+  align-content: space-between; // равномерное распределение строк по высоте
+  justify-items: center;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: rgba(78, 204, 163, 0.25);
+  }
+}
+
+.statIcon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.statValue {
+  font-size: 2.7rem;
+  font-weight: 800;
+  color: #4ecca3;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.statLabel {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.3);
+  line-height: 1.3;
+  line-height: 1.3;
+}
+
+/* Активная смена — детали */
+.activeShiftCard {
+  background: rgba(78, 204, 163, 0.05);
+  border: 1px solid rgba(78, 204, 163, 0.18);
+  border-radius: 14px;
+  padding: 16px 20px;
+}
+
+.activeShiftHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: #4ecca3;
+}
+
+.activeShiftDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ecca3;
+  box-shadow: 0 0 6px #4ecca3;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+.activeShiftRows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.activeShiftRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+
+  span {
+    color: rgba(255, 255, 255, 0.35);
+  }
+  strong {
+    color: #fff;
+  }
+}
+
+/* ══════════════════════════════════
+   СЕКЦИИ (СМЕНЫ + ЛОГИ)
+══════════════════════════════════ */
+.section {
+  background: #1a1a1d;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin-bottom: 16px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #4ecca3;
+  }
+}
+
+.sectionCount {
+  font-size: 0.75rem;
+  color: #444;
+}
+
+.empty {
+  text-align: center;
+  padding: 24px 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Список смен ── */
+.shiftsList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.shiftRow {
+  display: grid;
+  grid-template-columns: 160px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  transition: background 0.15s;
+  font-size: 0.82rem;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  @media (max-width: 680px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.shiftRowActive {
+  border-color: rgba(78, 204, 163, 0.2);
+  background: rgba(78, 204, 163, 0.04);
+}
+
+.shiftRowLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.shiftStatus {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  width: fit-content;
+}
+
+.shiftStatusOpen {
+  background: rgba(78, 204, 163, 0.12);
+  color: #4ecca3;
+  border: 1px solid rgba(78, 204, 163, 0.25);
+}
+
+.shiftStatusClosed {
+  background: rgba(160, 160, 160, 0.07);
+  color: #666;
+  border: 1px solid rgba(160, 160, 160, 0.15);
+}
+
+.shiftDate {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 2px;
+}
+
+.shiftRowMid {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.6);
+
+  em {
+    color: #4ecca3;
+    font-style: normal;
+  }
+}
+
+.arrow {
+  color: #333;
+}
+
+.shiftRowRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.shiftDur {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.shiftIp {
+  font-size: 0.68rem;
+  color: #444;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Журнал действий ── */
+.logsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.logRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+  border-bottom: 1px solid #1f1f22;
+  transition: background 0.12s;
+  border-radius: 8px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+    padding-left: 8px;
+  }
+}
+
+.logIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.logInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.logAction {
+  font-size: 0.85rem;
+  color: #ddd;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logTarget {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.logDate {
+  font-size: 0.72rem;
+  color: #444;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Кнопка «показать ещё» */
+.showMoreBtn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 9px;
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  color: #555;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #4ecca3;
+    color: #4ecca3;
+    background: rgba(78, 204, 163, 0.05);
+  }
+}

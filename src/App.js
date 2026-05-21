@@ -17,14 +17,17 @@ import React from 'react';
 import Profile from './pages/Profile';
 import Roomspg from './pages/Rooms';
 import RoomPage from './pages/RoomPage';
+import GamesPage from './pages/GamesPage';
 
 import AdminDashboard from './pages/admin/AdminDashboard';
 import ManagerDashboard from './pages/manager/ManagerDashboard';
 import ShiftPage from './pages/admin/ShiftPage';
 import CurrentBookgns from './pages/admin/CurrentBookings';
 import PackageSale from './pages/admin/PackageSale';
+import StaffProfile from './pages/Staffprofile';
 
 import AnalyticsPage from './pages/manager/AnalyticsPage';
+import RoomsManagement from './pages/manager/Roomsmanagement';
 
 function App() {
   // Проверяем куки при загрузке: если токен есть, значит залогинены
@@ -123,15 +126,35 @@ function App() {
           <Route path='/auth' element={<Auth onLoginSuccess={onLoginSuccess} />} />
           <Route
             path='/profile'
-            element={isAuth ? <Profile onLogout={logout} /> : <Navigate to='/auth' />}
+            element={
+              isAuth ? (
+                userRole === 'Клиент' ? (
+                  <Profile onLogout={logout} />
+                ) : (
+                  <StaffProfile onLogout={logout} userRole={userRole} />
+                )
+              ) : (
+                <Navigate to='/auth' />
+              )
+            }
           />
           <Route path='/rooms' element={<Roomspg />} />
+          <Route path='/games' element={<GamesPage />} />
           <Route path='/room/:roomId' element={<RoomPage isAuth={isAuth} />} />
           {/* <Route 
   path='/auth' 
   element={isAuth ? <Navigate to="/" /> : <Auth onLoginSuccess={login} />} 
 /> */}
           <Route path='/booking/success/:bookingId' element={<Roomspg />} />
+
+          <Route
+            path='/staff-profile'
+            element={
+              <ProtectedRoute allowedRoles={['Администратор', 'Управляющий']}>
+                <StaffProfile onLogout={logout} />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Раздел управляющего только для admin */}
           {/* Панель управляющего – только admin */}
@@ -159,6 +182,8 @@ function App() {
             }
           >
             <Route index element={<AnalyticsPage />} />
+            <Route path='shift' element={<ShiftPage />} />
+            <Route path='rooms-managment' element={<RoomsManagement />} />
             <Route path='currentBookings' element={<CurrentBookgns />} />
             <Route path='packageSale' element={<PackageSale />} />
             {/*             <Route path='prices' element={<ManagerPrices />} /> */}

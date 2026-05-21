@@ -1,0 +1,17 @@
+.games {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: 8px;
+  row-gap: 32px;
+  justify-items: center;
+}
+.games > * {
+  max-width: 400px;
+  margin-top: 14px;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

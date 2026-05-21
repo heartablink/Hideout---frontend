@@ -106,8 +106,7 @@ const Home = () => {
               ? gamesList.map((game, index) => (
                   <GameBlock
                     key={index} // 👈 ВАЖНО: добавляем key!
-                    name={game.title}
-                    img={game.image_url}
+                    game={game}
                   />
                 ))
               : ''}

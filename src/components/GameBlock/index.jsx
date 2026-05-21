@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from '../GameBlock/GameBlock.module.scss';
 
-const GameBlock = ({ name, img }) => {
+const GameBlock = ({ game }) => {
   return (
     <div className={styles.wrapper}>
-      <img src={img} alt={name} />
-      <p className={styles.gameInfo}>{name}</p>
+      <img src={game.image_url} alt={game.title} />
+      <p className={styles.gameInfo}>{game.title}</p>
     </div>
   );
 };

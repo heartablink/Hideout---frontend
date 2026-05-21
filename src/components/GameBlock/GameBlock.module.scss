@@ -1,6 +1,7 @@
 @use '../../scss/abstracts/variables' as v;
 
 .wrapper {
+  position: relative;
   height: 284px;
   width: 214px;
   overflow: hidden;
