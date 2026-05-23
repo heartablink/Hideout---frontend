@@ -36,8 +36,12 @@ const PackageSale = () => {
         `http://localhost:4444/api/packages/search-client?phone=${phone}`,
         { headers },
       );
-      setClient(data);
-      setStep('select');
+      if (data.role === 'сотрудник') {
+        setClientError('Этот пользователь является сотрудником. Покупка пакетов хайдов невозможна');
+      } else {
+        setClient(data);
+        setStep('select');
+      }
     } catch (err) {
       setClientError(err.response?.data?.message || 'Клиент не найден');
     } finally {
@@ -81,7 +85,7 @@ const PackageSale = () => {
         <div className={styles.searchRow}>
           <input
             className={styles.input}
-            placeholder='+7 (999) 999-99-99'
+            placeholder='79999999999'
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}

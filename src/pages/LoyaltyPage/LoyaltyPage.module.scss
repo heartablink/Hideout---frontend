@@ -1,0 +1,701 @@
+// LoyaltyPage.module.scss
+// Соответствует тёмной теме проекта Hideout
+
+.page {
+  min-height: 100vh;
+  background: #080808;
+  color: #fff;
+  font-family: inherit;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+// ── Hero ────────────────────────────────────────────────────────────────────
+.hero {
+  text-align: center;
+  padding: 56px 0 44px;
+}
+
+.heroBadge {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: #4ecca3;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.heroTitle {
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, #fff 40%, #4ecca3);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 14px;
+}
+
+.heroSub {
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.45);
+  max-width: 540px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+}
+
+.tabRow {
+  display: flex;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 4px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.tabBtn {
+  padding: 10px 22px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+
+  &.active {
+    background: rgba(78, 204, 163, 0.15);
+    color: #4ecca3;
+    font-weight: 600;
+  }
+
+  &:not(.active) {
+    color: rgba(255, 255, 255, 0.45);
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.75);
+    }
+  }
+}
+
+// ── Error ───────────────────────────────────────────────────────────────────
+.errorBlock {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  padding: 16px 20px;
+  color: #ef4444;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+// ── Detail card (активный уровень) ───────────────────────────────────────────
+.detailCard {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 40px;
+  background: #111;
+  border-radius: 24px;
+  padding: 40px;
+  margin-bottom: 48px;
+  border: 1px solid #222;
+  transition:
+    box-shadow 0.4s,
+    border-color 0.4s;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detailImage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.heroImage {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  border-radius: 16px;
+  filter: drop-shadow(0 0 24px rgba(78, 204, 163, 0.25));
+  transition: filter 0.4s;
+}
+
+.heroImagePlaceholder {
+  width: 220px;
+  height: 220px;
+  border-radius: 16px;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroEmoji {
+  font-size: 80px;
+}
+
+.discountBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 40px;
+  border: 1px solid;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.detailInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+}
+
+.levelOrder {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 0 0 6px;
+}
+
+.levelName {
+  font-size: 38px;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.levelDescription {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.statCard {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 14px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.statLabel {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.statValue {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+}
+
+// ── XP Progress ──────────────────────────────────────────────────────────────
+.xpProgress {
+  .xpLabels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  .xpRange {
+    color: rgba(255, 255, 255, 0.4);
+  }
+  .xpCurrent {
+    font-weight: 700;
+  }
+
+  .xpBarBg {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+  }
+
+  .xpBarFill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.6s ease;
+  }
+}
+
+// ── Timeline (все уровни) ────────────────────────────────────────────────────
+.timelineTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.timelineGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 60px;
+}
+
+.timelineItem {
+  background: #111;
+  border-radius: 16px;
+  padding: 20px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+  &.active {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.timelineAvatar {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 0 8px rgba(78, 204, 163, 0.2));
+}
+
+.timelineAvatarPlaceholder {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  border: 1px solid;
+}
+
+.timelineName {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 2px;
+  color: #fff;
+}
+
+.timelineXp {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0 0 4px;
+}
+
+.timelineDiscount {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0;
+}
+
+// ── Activities ───────────────────────────────────────────────────────────────
+.activitiesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.activityCard {
+  background: #111;
+  border-radius: 16px;
+  padding: 20px 22px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-left-width: 3px;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.activityIcon {
+  font-size: 28px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.activityContent {
+  flex: 1;
+}
+
+.activityHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  gap: 10px;
+}
+
+.activityName {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.activityXp {
+  font-size: 13px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.activityDesc {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.activityBadge {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  border: 1px solid;
+
+  &.repeat {
+    color: #4ecca3;
+    border-color: rgba(78, 204, 163, 0.3);
+    background: rgba(78, 204, 163, 0.08);
+  }
+
+  &.once {
+    color: #a855f7;
+    border-color: rgba(168, 85, 247, 0.3);
+    background: rgba(168, 85, 247, 0.08);
+  }
+}
+
+.rulesBlock {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  padding: 24px 28px;
+  margin-bottom: 60px;
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 14px;
+    color: #4ecca3;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0 0 0 1.2rem;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 2.2;
+  }
+
+  strong {
+    color: #fff;
+  }
+}
+
+// ── Packages ─────────────────────────────────────────────────────────────────
+.currencyInfo {
+  margin-bottom: 28px;
+  padding: 20px 24px;
+  background: #111;
+  border: 1px solid rgba(78, 204, 163, 0.2);
+  border-radius: 16px;
+
+  .currencyTitle {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+
+  .currencyDesc {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.7;
+  }
+}
+
+.packagesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.packageCard {
+  background: #111;
+  border-radius: 20px;
+  padding: 28px 22px;
+  position: relative;
+  text-align: center;
+  transition: all 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &.popular {
+    background: rgba(78, 204, 163, 0.07);
+    border-color: rgba(78, 204, 163, 0.4);
+  }
+
+  .popularBadge {
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4ecca3;
+    color: #000;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 14px;
+    border-radius: 0 0 10px 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .packageIcon {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  .packageName {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: #fff;
+  }
+
+  .packagePrice {
+    font-size: 32px;
+    font-weight: 900;
+    margin: 0 0 4px;
+    color: #fff;
+
+    &.popular {
+      color: #4ecca3;
+    }
+  }
+
+  .packageRubHint {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.35);
+    margin: 0 0 14px;
+  }
+
+  .packageDesc {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+.exampleBlock {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  padding: 24px 28px;
+  margin-bottom: 60px;
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 16px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+
+.exampleGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.exampleCard {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 16px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  .exampleLabel {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0 0 10px;
+    line-height: 1.5;
+  }
+
+  .oldPrice {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.35);
+    text-decoration: line-through;
+    margin: 0 0 2px;
+  }
+
+  .newPrice {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0 0 2px;
+  }
+
+  .saved {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.3);
+    margin: 0;
+  }
+}
+
+// ── FAQ ──────────────────────────────────────────────────────────────────────
+.faqContainer {
+  max-width: 720px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+}
+
+.faqItem {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.faqQuestion {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #fff;
+  padding: 18px 22px;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #4ecca3;
+  }
+}
+
+.faqIcon {
+  color: #4ecca3;
+  font-size: 22px;
+  flex-shrink: 0;
+  transition: transform 0.25s;
+  line-height: 1;
+
+  &.open {
+    transform: rotate(45deg);
+  }
+}
+
+.faqAnswer {
+  padding: 0 22px 18px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.7;
+}
+
+// ── Skeleton ─────────────────────────────────────────────────────────────────
+.skeleton {
+  background: linear-gradient(90deg, #1a1a1a 25%, #252525 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 8px;
+}
+
+.skeletonImage {
+  width: 220px;
+  height: 220px;
+  border-radius: 16px;
+}
+
+.skeletonBadge {
+  width: 160px;
+  height: 42px;
+  border-radius: 40px;
+}
+
+.skeletonTitle {
+  width: 60%;
+  height: 44px;
+  border-radius: 8px;
+}
+
+.skeletonText {
+  width: 100%;
+  height: 18px;
+  border-radius: 4px;
+}
+
+.skeletonSmall {
+  width: 70%;
+  height: 14px;
+  border-radius: 4px;
+  margin: 4px auto;
+}
+
+.skeletonAvatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  margin: 0 auto 8px;
+}
+
+.skeletonIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

@@ -25,6 +25,9 @@ import ShiftPage from './pages/admin/ShiftPage';
 import CurrentBookgns from './pages/admin/CurrentBookings';
 import PackageSale from './pages/admin/PackageSale';
 import StaffProfile from './pages/Staffprofile';
+import BookingsHistoryPage from './pages/manager/BookingsHistoryPage';
+import LoyaltyPage from './pages/LoyaltyPage';
+import GuestBooking from './pages/admin/GuestBooking';
 
 import AnalyticsPage from './pages/manager/AnalyticsPage';
 import RoomsManagement from './pages/manager/Roomsmanagement';
@@ -140,6 +143,7 @@ function App() {
           />
           <Route path='/rooms' element={<Roomspg />} />
           <Route path='/games' element={<GamesPage />} />
+          <Route path='/loyalty' element={<LoyaltyPage />} />
           <Route path='/room/:roomId' element={<RoomPage isAuth={isAuth} />} />
           {/* <Route 
   path='/auth' 
@@ -168,6 +172,7 @@ function App() {
           >
             <Route index element={<ShiftPage />} />
             <Route path='currentBookings' element={<CurrentBookgns />} />
+            <Route path='guestBooking' element={<GuestBooking />} />
             <Route path='packageSale' element={<PackageSale />} />
           </Route>
 
@@ -184,6 +189,7 @@ function App() {
             <Route index element={<AnalyticsPage />} />
             <Route path='shift' element={<ShiftPage />} />
             <Route path='rooms-managment' element={<RoomsManagement />} />
+            <Route path='bookings' element={<BookingsHistoryPage />} />
             <Route path='currentBookings' element={<CurrentBookgns />} />
             <Route path='packageSale' element={<PackageSale />} />
             {/*             <Route path='prices' element={<ManagerPrices />} /> */}

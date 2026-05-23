@@ -1,70 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import styles from './Roomsmanagement.module.scss';
 
-const MOCK_ROOMS = [
-  {
-    room_id: 1,
-    name: 'PlayStation 5 — Зал A',
-    category_name: 'PlayStation',
-    max_people: 4,
-    price: 800,
-    is_active: true,
-    is_deleted: false,
-    image: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=220&fit=crop',
-    description: 'Просторный зал с новейшими PS5 консолями и 4K телевизорами.',
-  },
-  {
-    room_id: 2,
-    name: 'VR Arena',
-    category_name: 'VR',
-    max_people: 2,
-    price: 1200,
-    is_active: true,
-    is_deleted: false,
-    image: 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=400&h=220&fit=crop',
-    description: 'Полное погружение в виртуальную реальность с топовым оборудованием.',
-  },
-  {
-    room_id: 3,
-    name: 'PlayStation 5 — VIP',
-    category_name: 'PlayStation',
-    max_people: 6,
-    price: 1500,
-    is_active: false,
-    is_deleted: false,
-    image: 'https://images.unsplash.com/photo-1614294149010-950b698f72c0?w=400&h=220&fit=crop',
-    description: 'VIP-зал для больших компаний с премиум оборудованием.',
-    maintenance_reason: 'Замена оборудования',
-  },
-  {
-    room_id: 4,
-    name: 'VR Одиночный',
-    category_name: 'VR',
-    max_people: 1,
-    price: 900,
-    is_active: true,
-    is_deleted: false,
-    image: 'https://images.unsplash.com/photo-1617802690992-15d93263d3a9?w=400&h=220&fit=crop',
-    description: 'Приватный VR-кабинет для личного погружения.',
-  },
-  {
-    room_id: 5,
-    name: 'PlayStation 5 — Зал B',
-    category_name: 'PlayStation',
-    max_people: 4,
-    price: 800,
-    is_active: true,
-    is_deleted: false,
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=220&fit=crop',
-    description: 'Стандартный зал с игровыми консолями и широкоформатными экранами.',
-  },
-];
+import NotificationModal from '../../../modals/NotificationModal';
+
+const API = 'http://localhost:4444/api';
+
+// ─── helpers ────────────────────────────────────────────────────────────────
+const authHeader = () => ({
+  Authorization: `Bearer ${localStorage.getItem('token')}`,
+});
 
 const CATEGORY_COLORS = {
   PlayStation: { bg: '#fc90c21a', text: '#fc90c2', border: '#fc90c240' },
   VR: { bg: '#4ecca31a', text: '#4ecca3', border: '#4ecca340' },
 };
 
+// ─── Overlay-обёртка ─────────────────────────────────────────────────────────
 const ModalOverlay = ({ children, onClose }) => (
   <div className={styles.overlay} onClick={onClose}>
     <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -73,16 +25,31 @@ const ModalOverlay = ({ children, onClose }) => (
   </div>
 );
 
-const PriceModal = ({ room, onClose, onSave }) => {
+// ─── Модалка: изменить цену ──────────────────────────────────────────────────
+const PriceModal = ({ room, onClose, onSaved }) => {
   const [newPrice, setNewPrice] = useState(room.price);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const val = Number(newPrice);
     if (!val || val <= 0) return setError('Цена должна быть больше нуля');
     if (val === room.price) return setError('Новая цена должна отличаться от текущей');
-    onSave(room.room_id, val);
-    onClose();
+
+    setLoading(true);
+    try {
+      const { data } = await axios.patch(
+        `${API}/manager/rooms/${room.room_id}/price`,
+        { price: val },
+        { headers: authHeader() },
+      );
+      onSaved(data);
+      onClose();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Ошибка сохранения');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -112,23 +79,46 @@ const PriceModal = ({ room, onClose, onSave }) => {
         <button className={styles.btnCancel} onClick={onClose}>
           Отмена
         </button>
-        <button className={styles.btnConfirm} onClick={handleSave}>
-          Сохранить
+        <button className={styles.btnConfirm} onClick={handleSave} disabled={loading}>
+          {loading ? 'Сохранение...' : 'Сохранить'}
         </button>
       </div>
     </ModalOverlay>
   );
 };
 
-const MaintenanceModal = ({ room, onClose, onSave }) => {
+// ─── Модалка: закрыть на обслуживание ───────────────────────────────────────
+const MaintenanceModal = ({ room, onClose, onSaved }) => {
   const [reason, setReason] = useState('');
+  const [startAt, setStartAt] = useState('');
+  const [endAt, setEndAt] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!reason.trim()) return setError('Укажите причину закрытия');
-    onSave(room.room_id, reason);
-    onClose();
+    if (endAt && startAt && new Date(endAt) <= new Date(startAt)) {
+      return setError('Дата окончания не может быть раньше или равна дате начала');
+    }
+
+    setLoading(true);
+    try {
+      const { data } = await axios.post(
+        `${API}/manager/rooms/${room.room_id}/maintenance`,
+        { reason, start_at: startAt || undefined, end_at: endAt || undefined },
+        { headers: authHeader() },
+      );
+      onSaved(room.room_id, reason, data);
+      onClose();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Ошибка закрытия');
+    } finally {
+      setLoading(false);
+    }
   };
+
+  // Минимальная дата — сегодня
+  const todayStr = new Date().toISOString().slice(0, 16);
 
   return (
     <ModalOverlay onClose={onClose}>
@@ -138,8 +128,9 @@ const MaintenanceModal = ({ room, onClose, onSave }) => {
       <h3 className={styles.modalTitle}>Временное закрытие</h3>
       <p className={styles.modalSubtitle}>{room.name}</p>
       <p className={styles.modalHint}>
-        Комната будет недоступна для бронирования. Укажите причину.
+        Комната будет недоступна для бронирования на указанный период.
       </p>
+
       <label className={styles.inputLabel}>Причина закрытия</label>
       <input
         className={styles.input}
@@ -150,70 +141,59 @@ const MaintenanceModal = ({ room, onClose, onSave }) => {
           setError('');
         }}
       />
+
+      <div className={styles.formRow}>
+        <div style={{ flex: 1 }}>
+          <label className={styles.inputLabel}>Начало</label>
+          <input
+            className={styles.input}
+            type='datetime-local'
+            min={todayStr}
+            value={startAt}
+            onChange={(e) => setStartAt(e.target.value)}
+          />
+        </div>
+        <div style={{ flex: 1 }}>
+          <label className={styles.inputLabel}>Окончание (необязательно)</label>
+          <input
+            className={styles.input}
+            type='datetime-local'
+            min={startAt || todayStr}
+            value={endAt}
+            onChange={(e) => setEndAt(e.target.value)}
+          />
+        </div>
+      </div>
+
       {error && <p className={styles.inputError}>{error}</p>}
       <div className={styles.modalActions}>
         <button className={styles.btnCancel} onClick={onClose}>
           Отмена
         </button>
-        <button className={styles.btnWarning} onClick={handleSave}>
-          Закрыть комнату
+        <button className={styles.btnWarning} onClick={handleSave} disabled={loading}>
+          {loading ? 'Закрытие...' : 'Закрыть комнату'}
         </button>
       </div>
     </ModalOverlay>
   );
 };
 
-const DeleteModal = ({ room, onClose, onSave }) => (
-  <ModalOverlay onClose={onClose}>
-    <button className={styles.modalClose} onClick={onClose}>
-      ×
-    </button>
-    <div className={styles.deleteIcon}>🗑</div>
-    <h3 className={styles.modalTitle}>Удалить комнату?</h3>
-    <p className={styles.modalHint}>
-      Комната <strong>«{room.name}»</strong> будет скрыта из каталога. Это действие необратимо.
-    </p>
-    <div className={styles.modalActions}>
-      <button className={styles.btnCancel} onClick={onClose}>
-        Отмена
-      </button>
-      <button
-        className={styles.btnDanger}
-        onClick={() => {
-          onSave(room.room_id);
-          onClose();
-        }}
-      >
-        Да, удалить
-      </button>
-    </div>
-  </ModalOverlay>
-);
-
-const CreateRoomModal = ({ onClose, onCreate }) => {
-  const [form, setForm] = useState({
-    name: '',
-    category_name: 'PlayStation',
-    max_people: 2,
-    price: '',
-    description: '',
-    image: '',
-  });
+// ─── Модалка: удалить ────────────────────────────────────────────────────────
+const DeleteModal = ({ room, onClose, onSaved }) => {
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const set = (key, val) => setForm((p) => ({ ...p, [key]: val }));
-
-  const handleCreate = () => {
-    if (!form.name.trim()) return setError('Введите название');
-    if (!form.price || Number(form.price) <= 0) return setError('Укажите цену больше 0');
-    onCreate({
-      ...form,
-      price: Number(form.price),
-      max_people: Number(form.max_people),
-      is_active: true,
-      is_deleted: false,
-    });
-    onClose();
+  const handleDelete = async () => {
+    setLoading(true);
+    try {
+      await axios.delete(`${API}/manager/rooms/${room.room_id}`, { headers: authHeader() });
+      onSaved(room.room_id);
+      onClose();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Ошибка удаления');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -221,7 +201,91 @@ const CreateRoomModal = ({ onClose, onCreate }) => {
       <button className={styles.modalClose} onClick={onClose}>
         ×
       </button>
-      <h3 className={styles.modalTitle}>Новая комната</h3>
+      <div className={styles.deleteIcon}>🗑</div>
+      <h3 className={styles.modalTitle}>Удалить комнату?</h3>
+      <p className={styles.modalHint}>
+        Комната <strong>«{room.name}»</strong> будет скрыта из каталога. Это действие необратимо.
+      </p>
+      {error && <p className={styles.inputError}>{error}</p>}
+      <div className={styles.modalActions}>
+        <button className={styles.btnCancel} onClick={onClose}>
+          Отмена
+        </button>
+        <button className={styles.btnDanger} onClick={handleDelete} disabled={loading}>
+          {loading ? 'Удаление...' : 'Да, удалить'}
+        </button>
+      </div>
+    </ModalOverlay>
+  );
+};
+
+// ─── Модалка: создать / редактировать комнату ────────────────────────────────
+const RoomFormModal = ({ editRoom, categories, onClose, onSaved }) => {
+  const isEdit = !!editRoom;
+  const [form, setForm] = useState({
+    name: editRoom?.name ?? '',
+    category_id: editRoom?.category_id ?? '',
+    max_people: editRoom?.max_people ?? 2,
+    price: editRoom?.price ?? '',
+    description: editRoom?.description ?? '',
+  });
+  const [imageFile, setImageFile] = useState(null);
+  const [preview, setPreview] = useState(editRoom?.image ?? null);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const fileRef = useRef();
+
+  const set = (key, val) => setForm((p) => ({ ...p, [key]: val }));
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setImageFile(file);
+    setPreview(URL.createObjectURL(file));
+  };
+
+  const handleSubmit = async () => {
+    if (!form.name.trim()) return setError('Введите название');
+    if (!isEdit && !form.category_id) return setError('Выберите категорию');
+    if (!isEdit && (!form.price || Number(form.price) <= 0))
+      return setError('Укажите цену больше 0');
+
+    setLoading(true);
+    try {
+      const fd = new FormData();
+      Object.entries(form).forEach(([k, v]) => {
+        if (v !== '') fd.append(k, v);
+      });
+      if (imageFile) fd.append('image', imageFile);
+
+      let data;
+      if (isEdit) {
+        // PUT /manager/rooms/:id — редактирование (название, описание, вместимость, фото)
+        ({ data } = await axios.put(`${API}/manager/rooms/${editRoom.room_id}`, fd, {
+          headers: { ...authHeader(), 'Content-Type': 'multipart/form-data' },
+        }));
+      } else {
+        // POST /manager/rooms — создание
+        ({ data } = await axios.post(`${API}/manager/rooms`, fd, {
+          headers: { ...authHeader(), 'Content-Type': 'multipart/form-data' },
+        }));
+      }
+
+      onSaved(data, isEdit);
+      onClose();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Ошибка сохранения');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <ModalOverlay onClose={onClose}>
+      <button className={styles.modalClose} onClick={onClose}>
+        ×
+      </button>
+      <h3 className={styles.modalTitle}>{isEdit ? 'Редактировать комнату' : 'Новая комнату'}</h3>
 
       <label className={styles.inputLabel}>Название</label>
       <input
@@ -231,15 +295,24 @@ const CreateRoomModal = ({ onClose, onCreate }) => {
         onChange={(e) => set('name', e.target.value)}
       />
 
-      <label className={styles.inputLabel}>Категория</label>
-      <select
-        className={styles.input}
-        value={form.category_name}
-        onChange={(e) => set('category_name', e.target.value)}
-      >
-        <option value='PlayStation'>PlayStation</option>
-        <option value='VR'>VR</option>
-      </select>
+      {/* Категорию при редактировании не меняем */}
+      {!isEdit && (
+        <>
+          <label className={styles.inputLabel}>Категория</label>
+          <select
+            className={styles.input}
+            value={form.category_id}
+            onChange={(e) => set('category_id', e.target.value)}
+          >
+            <option value=''>— выберите —</option>
+            {categories.map((c) => (
+              <option key={c.category_id} value={c.category_id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </>
+      )}
 
       <div className={styles.formRow}>
         <div style={{ flex: 1 }}>
@@ -248,54 +321,119 @@ const CreateRoomModal = ({ onClose, onCreate }) => {
             className={styles.input}
             type='number'
             min='1'
-            max='10'
+            max='20'
             value={form.max_people}
             onChange={(e) => set('max_people', e.target.value)}
           />
         </div>
-        <div style={{ flex: 1 }}>
-          <label className={styles.inputLabel}>Цена ₽/ч</label>
-          <input
-            className={styles.input}
-            type='number'
-            min='1'
-            placeholder='800'
-            value={form.price}
-            onChange={(e) => set('price', e.target.value)}
-          />
-        </div>
+        {/* Цену при редактировании меняют через отдельную кнопку */}
+        {!isEdit && (
+          <div style={{ flex: 1 }}>
+            <label className={styles.inputLabel}>Цена ₽/ч</label>
+            <input
+              className={styles.input}
+              type='number'
+              min='1'
+              placeholder='800'
+              value={form.price}
+              onChange={(e) => set('price', e.target.value)}
+            />
+          </div>
+        )}
       </div>
-
-      <label className={styles.inputLabel}>Ссылка на фото (URL)</label>
-      <input
-        className={styles.input}
-        placeholder='https://...'
-        value={form.image}
-        onChange={(e) => set('image', e.target.value)}
-      />
 
       <label className={styles.inputLabel}>Описание</label>
       <textarea
         className={`${styles.input} ${styles.textarea}`}
-        placeholder='Краткое описание комнаты...'
+        placeholder='Краткое описание...'
         value={form.description}
         onChange={(e) => set('description', e.target.value)}
       />
+
+      <label className={styles.inputLabel}>Фото комнаты</label>
+      {preview && (
+        <img
+          src={preview}
+          alt='preview'
+          style={{
+            width: '100%',
+            height: 140,
+            objectFit: 'cover',
+            borderRadius: 8,
+            marginBottom: 8,
+          }}
+        />
+      )}
+      <input
+        ref={fileRef}
+        type='file'
+        accept='image/jpeg,image/png,image/webp'
+        style={{ display: 'none' }}
+        onChange={handleImageChange}
+      />
+      <button
+        className={styles.btnCancel}
+        style={{ width: '100%', marginBottom: 0 }}
+        onClick={() => fileRef.current.click()}
+      >
+        {preview ? '📷 Заменить фото' : '📷 Загрузить фото'}
+      </button>
 
       {error && <p className={styles.inputError}>{error}</p>}
       <div className={styles.modalActions}>
         <button className={styles.btnCancel} onClick={onClose}>
           Отмена
         </button>
-        <button className={styles.btnConfirm} onClick={handleCreate}>
-          Создать
+        <button className={styles.btnConfirm} onClick={handleSubmit} disabled={loading}>
+          {loading ? 'Сохранение...' : isEdit ? 'Сохранить' : 'Создать'}
         </button>
       </div>
     </ModalOverlay>
   );
 };
 
-const RoomCard = ({ room, onPrice, onMaintenance, onReopen, onDelete }) => {
+// ─── Модалка: подтвердить открытие комнаты ──────────────────────────────────
+const ReopenModal = ({ room, onClose, onConfirm }) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleConfirm = async () => {
+    setLoading(true);
+    await onConfirm(room.room_id);
+    setLoading(false);
+    onClose();
+  };
+
+  return (
+    <ModalOverlay onClose={onClose}>
+      <button className={styles.modalClose} onClick={onClose}>
+        ×
+      </button>
+      <div className={styles.deleteIcon}>🔓</div>
+      <h3 className={styles.modalTitle}>Открыть комнату?</h3>
+      <p className={styles.modalHint}>
+        Комната <strong>«{room.name}»</strong> будет переведена в активный статус и станет доступна
+        для бронирования.
+        {room.maintenance_reason && (
+          <>
+            <br />
+            <br />
+            Текущая причина закрытия: <em>{room.maintenance_reason}</em>
+          </>
+        )}
+      </p>
+      <div className={styles.modalActions}>
+        <button className={styles.btnCancel} onClick={onClose}>
+          Отмена
+        </button>
+        <button className={styles.btnConfirm} onClick={handleConfirm} disabled={loading}>
+          {loading ? 'Открытие...' : 'Да, открыть'}
+        </button>
+      </div>
+    </ModalOverlay>
+  );
+};
+
+const RoomCard = ({ room, onPrice, onEdit, onMaintenance, onReopen, onDelete }) => {
   const cat = CATEGORY_COLORS[room.category_name] || CATEGORY_COLORS.PlayStation;
 
   return (
@@ -340,75 +478,42 @@ const RoomCard = ({ room, onPrice, onMaintenance, onReopen, onDelete }) => {
         {room.description && <p className={styles.cardDesc}>{room.description}</p>}
 
         <div className={styles.cardActions}>
-          <button className={styles.actionBtn} onClick={() => onPrice(room)} title='Изменить цену'>
-            <svg
-              width='14'
-              height='14'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='2'
-            >
-              <circle cx='12' cy='12' r='10' />
-              <path d='M9 12l2 2 4-4' />
-            </svg>
-            Цена
+          {/* Редактировать */}
+          <button className={styles.actionBtn} onClick={() => onEdit(room)} title='Редактировать'>
+            ✏️ Изменить
           </button>
+
+          {/* Цена */}
+          <button className={styles.actionBtn} onClick={() => onPrice(room)} title='Изменить цену'>
+            💰 Цена
+          </button>
+
+          {/* Закрыть / Открыть */}
           {room.is_active ? (
             <button
               className={`${styles.actionBtn} ${styles.actionWarn}`}
               onClick={() => onMaintenance(room)}
               title='Закрыть на обслуживание'
             >
-              <svg
-                width='14'
-                height='14'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeWidth='2'
-              >
-                <path d='M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z' />
-              </svg>
-              Закрыть
+              🔧 Закрыть
             </button>
           ) : (
             <button
               className={`${styles.actionBtn} ${styles.actionGreen}`}
-              onClick={() => onReopen(room.room_id)}
+              onClick={() => onReopen(room)}
               title='Открыть комнату'
             >
-              <svg
-                width='14'
-                height='14'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeWidth='2'
-              >
-                <polyline points='20 6 9 17 4 12' />
-              </svg>
-              Открыть
+              ✅ Открыть
             </button>
           )}
+
+          {/* Удалить */}
           <button
             className={`${styles.actionBtn} ${styles.actionDanger}`}
             onClick={() => onDelete(room)}
             title='Удалить комнату'
           >
-            <svg
-              width='14'
-              height='14'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='2'
-            >
-              <polyline points='3 6 5 6 21 6' />
-              <path d='M19 6l-1 14H6L5 6' />
-              <path d='M10 11v6M14 11v6' />
-              <path d='M9 6V4h6v2' />
-            </svg>
+            🗑
           </button>
         </div>
       </div>
@@ -416,37 +521,113 @@ const RoomCard = ({ room, onPrice, onMaintenance, onReopen, onDelete }) => {
   );
 };
 
+// ─── Главный компонент ───────────────────────────────────────────────────────
 const RoomsManagement = () => {
-  const [rooms, setRooms] = useState(MOCK_ROOMS);
+  const [rooms, setRooms] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [branchAddress, setBranchAddress] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    type: 'success',
+    title: '',
+    message: '',
+  });
+
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
 
+  // Состояния модалок
   const [priceModal, setPriceModal] = useState(null);
+  const [editModal, setEditModal] = useState(null); // null | room (редакт.) | 'create'
   const [maintenanceModal, setMaintenanceModal] = useState(null);
   const [deleteModal, setDeleteModal] = useState(null);
-  const [createModal, setCreateModal] = useState(false);
+  const [reopenModal, setReopenModal] = useState(null); // null | room
 
-  const handlePriceSave = (id, newPrice) =>
-    setRooms((prev) => prev.map((r) => (r.room_id === id ? { ...r, price: newPrice } : r)));
+  const showNotification = (type, title, message) => {
+    setNotification({ isOpen: true, type, title, message });
+  };
 
-  const handleMaintenanceSave = (id, reason) =>
+  // ─── Загрузка данных ────────────────────────────────────────────────────
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [roomsRes, catRes] = await Promise.all([
+          axios.get(`${API}/manager/rooms`, { headers: authHeader() }),
+          axios.get(`${API}/categories`),
+        ]);
+        setRooms(roomsRes.data);
+        setCategories(catRes.data);
+        if (roomsRes.data.length > 0) setBranchAddress(roomsRes.data[0].address);
+      } catch (err) {
+        setError(err.response?.data?.message || 'Не удалось загрузить данные');
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  // ─── Колбэки обновления состояния ───────────────────────────────────────
+
+  // Цена обновлена
+  const handlePriceSaved = (updatedRoom) => {
+    setRooms((prev) =>
+      prev.map((r) => (r.room_id === updatedRoom.room_id ? { ...r, price: updatedRoom.price } : r)),
+    );
+  };
+
+  // Комната создана или отредактирована
+  const handleRoomSaved = (savedRoom, isEdit) => {
+    if (isEdit) {
+      setRooms((prev) =>
+        prev.map((r) => (r.room_id === savedRoom.room_id ? { ...r, ...savedRoom } : r)),
+      );
+    } else {
+      // Новая комната — нет данных категории от бэка, добавляем из списка
+      const cat = categories.find((c) => c.category_id === Number(savedRoom.category_id));
+      setRooms((prev) => [
+        ...prev,
+        { ...savedRoom, category_name: cat?.name ?? '', is_active: true },
+      ]);
+    }
+  };
+
+  // Закрытие на обслуживание
+  const handleMaintenanceSaved = (roomId, reason) => {
     setRooms((prev) =>
       prev.map((r) =>
-        r.room_id === id ? { ...r, is_active: false, maintenance_reason: reason } : r,
+        r.room_id === roomId ? { ...r, is_active: false, maintenance_reason: reason } : r,
       ),
     );
+  };
 
-  const handleReopen = (id) =>
-    setRooms((prev) =>
-      prev.map((r) =>
-        r.room_id === id ? { ...r, is_active: true, maintenance_reason: undefined } : r,
-      ),
-    );
+  // Открытие комнаты (вызывается из модалки подтверждения)
+  const handleReopen = async (roomId) => {
+    try {
+      await axios.delete(`${API}/manager/rooms/${roomId}/maintenance`, { headers: authHeader() });
+      setRooms((prev) =>
+        prev.map((r) =>
+          r.room_id === roomId ? { ...r, is_active: true, maintenance_reason: null } : r,
+        ),
+      );
+    } catch (err) {
+      showNotification(
+        'error',
+        'Ошибка',
+        err.response?.data?.message || 'Не удалось открыть комнату',
+      );
+    }
+  };
 
-  const handleDelete = (id) => setRooms((prev) => prev.filter((r) => r.room_id !== id));
+  // Удаление
+  const handleDeleteSaved = (roomId) => {
+    setRooms((prev) => prev.filter((r) => r.room_id !== roomId));
+  };
 
-  const handleCreate = (room) => setRooms((prev) => [...prev, { ...room, room_id: Date.now() }]);
-
+  // ─── Фильтрация ─────────────────────────────────────────────────────────
   const filtered = rooms.filter((r) => {
     if (filterCategory !== 'all' && r.category_name !== filterCategory) return false;
     if (filterStatus === 'active' && !r.is_active) return false;
@@ -457,43 +638,69 @@ const RoomsManagement = () => {
   const activeCount = rooms.filter((r) => r.is_active).length;
   const closedCount = rooms.filter((r) => !r.is_active).length;
 
+  // ─── Рендер ─────────────────────────────────────────────────────────────
+  if (loading) return <div style={{ color: '#888', padding: 40 }}>Загрузка комнат...</div>;
+  if (error) return <div style={{ color: '#ff4d4d', padding: 40 }}>{error}</div>;
+
   return (
     <div className={styles.wrapper}>
+      {/* Модалки */}
       {priceModal && (
         <PriceModal
           room={priceModal}
           onClose={() => setPriceModal(null)}
-          onSave={handlePriceSave}
+          onSaved={handlePriceSaved}
+        />
+      )}
+      <NotificationModal
+        isOpen={notification.isOpen}
+        type={notification.type}
+        title={notification.title}
+        message={notification.message}
+        onClose={() => setNotification((prev) => ({ ...prev, isOpen: false }))}
+      />
+      {editModal && (
+        <RoomFormModal
+          editRoom={editModal === 'create' ? null : editModal}
+          categories={categories}
+          onClose={() => setEditModal(null)}
+          onSaved={handleRoomSaved}
         />
       )}
       {maintenanceModal && (
         <MaintenanceModal
           room={maintenanceModal}
           onClose={() => setMaintenanceModal(null)}
-          onSave={handleMaintenanceSave}
+          onSaved={handleMaintenanceSaved}
         />
       )}
       {deleteModal && (
         <DeleteModal
           room={deleteModal}
           onClose={() => setDeleteModal(null)}
-          onSave={handleDelete}
+          onSaved={handleDeleteSaved}
         />
       )}
-      {createModal && (
-        <CreateRoomModal onClose={() => setCreateModal(false)} onCreate={handleCreate} />
+      {reopenModal && (
+        <ReopenModal
+          room={reopenModal}
+          onClose={() => setReopenModal(null)}
+          onConfirm={handleReopen}
+        />
       )}
 
+      {/* Шапка */}
       <div className={styles.pageHeader}>
         <div>
           <h2 className={styles.pageTitle}>Управление комнатами</h2>
-          <p className={styles.pageSubtitle}>Филиал: ул. Красная, 12</p>
+          <p className={styles.pageSubtitle}>Филиал: {branchAddress || '—'}</p>
         </div>
-        <button className={styles.createBtn} onClick={() => setCreateModal(true)}>
+        <button className={styles.createBtn} onClick={() => setEditModal('create')}>
           + Создать комнату
         </button>
       </div>
 
+      {/* Статистика */}
       <div className={styles.stats}>
         <div className={styles.statCard}>
           <span className={styles.statNum}>{rooms.length}</span>
@@ -509,9 +716,10 @@ const RoomsManagement = () => {
         </div>
       </div>
 
+      {/* Фильтры */}
       <div className={styles.filters}>
         <div className={styles.filterGroup}>
-          {['all', 'PlayStation', 'VR'].map((v) => (
+          {['all', ...categories.map((c) => c.name)].map((v) => (
             <button
               key={v}
               className={`${styles.filterBtn} ${filterCategory === v ? styles.filterActive : ''}`}
@@ -538,6 +746,7 @@ const RoomsManagement = () => {
         </div>
       </div>
 
+      {/* Сетка */}
       {filtered.length === 0 ? (
         <div className={styles.empty}>
           <p>Комнаты не найдены</p>
@@ -549,8 +758,9 @@ const RoomsManagement = () => {
               key={room.room_id}
               room={room}
               onPrice={setPriceModal}
+              onEdit={setEditModal}
               onMaintenance={setMaintenanceModal}
-              onReopen={handleReopen}
+              onReopen={(room) => setReopenModal(room)}
               onDelete={setDeleteModal}
             />
           ))}

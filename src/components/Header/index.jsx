@@ -20,13 +20,10 @@ const Header = ({ isAuth, userRole }) => {
             <Link to='/rooms'>Комнаты</Link>
           </li>
           <li>
-            <a>Программа лояльности</a>
+            <Link to='/loyalty'>Программа лояльности</Link>
           </li>
           <li>
             <Link to='/games'>Игры</Link>
-          </li>
-          <li>
-            <a>Адреса</a>
           </li>
           {userRole === 'Администратор' && <Link to='/admin'>Управление</Link>}
           {userRole === 'Управляющий' && <Link to='/manager'>Анализ</Link>}

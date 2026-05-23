@@ -42,12 +42,12 @@ const ManagerDashboard = () => {
               </Link>
             </li>
             <li>
-              <Link
-                to='/admin/transactions'
-                className={`${styles.menuLink} ${isActive('/admin/transactions')}`}
+              {/* <Link
+                to='/admin/guestBooking'
+                className={`${styles.menuLink} ${isActive('/admin/guestBooking')}`}
               >
-                Создание бронирования
-              </Link>
+                Создание бронирований
+              </Link> */}
             </li>
           </ul>
         </nav>

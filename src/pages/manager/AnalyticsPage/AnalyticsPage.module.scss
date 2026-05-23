@@ -196,6 +196,50 @@
   margin: 0;
 }
 
+.exportBtn {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  background: rgba(78, 204, 163, 0.1);
+  border: 1px solid rgba(78, 204, 163, 0.3);
+  border-radius: 10px;
+  color: #4ecca3;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &:hover:not(:disabled) {
+    background: rgba(78, 204, 163, 0.18);
+    border-color: #4ecca3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(78, 204, 163, 0.15);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.exportSpinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(78, 204, 163, 0.3);
+  border-top-color: #4ecca3;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

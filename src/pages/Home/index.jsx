@@ -14,6 +14,7 @@ import Silent from '../../assets/images/silentHill.png';
 
 import GameBlock from '../../components/GameBlock';
 import MoreGamesBlock from '../../components/MoreGamesBlock';
+
 import React from 'react';
 
 const Home = () => {
