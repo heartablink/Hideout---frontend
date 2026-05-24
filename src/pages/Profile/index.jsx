@@ -11,6 +11,9 @@ import AchievementsBlock from '../../components/ProfileBlocks/Achievementsblock'
 import BookingsHistory from '../../components/ProfileBlocks/Bookingshistory';
 import TransactionsHistory from '../../components/ProfileBlocks/Transactionshistory';
 
+import EditProfileModal from '../../modals/Editprofilemodal';
+import DeleteProfileModal from '../../modals/Deleteprofilemodal';
+
 const Profile = ({ onLogout }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -28,6 +31,9 @@ const Profile = ({ onLogout }) => {
   });
   const [xpLogs, setXpLogs] = useState([]);
   const [transactions, setTransactions] = useState([]);
+
+  const [showEdit, setShowEdit] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
 
   const fetchClientData = async () => {
     try {
@@ -113,6 +119,20 @@ const Profile = ({ onLogout }) => {
     setIsCancelModalOpen(true);
   };
 
+  const handleProfileSaved = ({ name, surname, phone }) => {
+    setUser((prev) => ({
+      ...prev,
+      user_info: { ...prev.user_info, name, surname },
+      // phone обновляем только если сервер вернул новый (он null если не менялся)
+      phone: phone ?? prev.phone,
+    }));
+  };
+
+  const handleProfileDeleted = () => {
+    onLogout();
+    navigate('/');
+  };
+
   const cancelMessage = cancelBookingInfo
     ? `Вы действительно хотите отменить бронирование на ${new Date(cancelBookingInfo.date).toLocaleDateString()} с ${cancelBookingInfo.timeBegin?.slice(0, 5)} до ${cancelBookingInfo.timeEnd?.slice(0, 5)}?`
     : 'Вы действительно хотите отменить бронирование?';
@@ -179,6 +199,16 @@ const Profile = ({ onLogout }) => {
 
   return (
     <div className={styles.container}>
+      {showEdit && (
+        <EditProfileModal
+          user={{ name: user.user_info?.name, surname: user.user_info?.surname, phone: user.phone }}
+          onClose={() => setShowEdit(false)}
+          onSaved={handleProfileSaved}
+        />
+      )}
+      {showDelete && (
+        <DeleteProfileModal onClose={() => setShowDelete(false)} onDeleted={handleProfileDeleted} />
+      )}
       <h1 className={styles.title}>Личный кабинет</h1>
 
       {/* ── ВЕРХНЯЯ ЗОНА ── */}
@@ -224,9 +254,26 @@ const Profile = ({ onLogout }) => {
               <strong>{user.user_info.name}</strong>
             </div>
             <div className={styles.infoRow}>
+              <span>Фамилия</span>
+              <strong>{user.user_info.surname}</strong>
+            </div>
+            <div className={styles.infoRow}>
               <span>Телефон</span>
               <strong>{formatPhone(user.phone)}</strong>
             </div>
+          </div>
+          {/* Управление */}
+          <div className={`${styles.card} ${styles.actions}`}>
+            <h3>Аккаунт</h3>
+            <button className={styles.editBtn} onClick={() => setShowEdit(true)}>
+              Редактировать
+            </button>
+            <button className={styles.deleteBtn} onClick={() => setShowDelete(true)}>
+              Удалить профиль
+            </button>
+            <button className={styles.logoutBtn} onClick={handleLogoutClick}>
+              Выйти
+            </button>
           </div>
 
           {/* Депозит */}
@@ -244,16 +291,6 @@ const Profile = ({ onLogout }) => {
             <div className={styles.timeValue}>{formatHours(user.totalHours)}</div>
             <div className={styles.timeLabel}>в клубах сети</div>
           </div>
-
-          {/* Управление */}
-          <div className={`${styles.card} ${styles.actions}`}>
-            <h3>Аккаунт</h3>
-            <button className={styles.editBtn}>Редактировать</button>
-            <button className={styles.deleteBtn}>Удалить профиль</button>
-            <button className={styles.logoutBtn} onClick={handleLogoutClick}>
-              Выйти
-            </button>
-          </div>
         </div>
       </div>
 
@@ -262,8 +299,8 @@ const Profile = ({ onLogout }) => {
 
       {/* ── НИЖНЯЯ ЗОНА: транзакции + бронирования ── */}
       <div className={styles.bottomZone}>
-        <TransactionsHistory transactions={transactions} />
         <BookingsHistory bookings={bookings} onCancelClick={handleCancelClick} />
+        <TransactionsHistory transactions={transactions} />
       </div>
 
       <ConfirmModal

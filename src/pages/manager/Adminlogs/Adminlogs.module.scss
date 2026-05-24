@@ -1,0 +1,578 @@
+// AdminLogs.module.scss
+
+.wrapper {
+  color: #fff;
+  min-height: 100%;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.pageSubtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
+
+.resetBtn {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  color: #ef4444;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: #ef4444;
+  }
+}
+
+// ── Layout ────────────────────────────────────────────────────────────────────
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 24px;
+}
+
+.filterSection {
+  background: #1a1a1d;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filterLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #4ecca3;
+  margin: 0;
+}
+
+// Поиск
+.searchWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 9px 32px 9px 32px;
+  color: #fff;
+  font-size: 13px;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  &:focus {
+    outline: none;
+    border-color: rgba(78, 204, 163, 0.5);
+  }
+}
+
+.clearSearch {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+// Список сотрудников
+.staffList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+.staffItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  color: #fff;
+  font-family: inherit;
+  transition: all 0.15s;
+  width: 100%;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  &.staffActive {
+    background: rgba(78, 204, 163, 0.08);
+    border-color: rgba(78, 204, 163, 0.3);
+  }
+}
+
+.staffAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(78, 204, 163, 0.15);
+  color: #4ecca3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.staffInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.staffName {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.staffPhone {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.staffRole {
+  font-size: 10px;
+  color: #4ecca3;
+  font-weight: 600;
+}
+
+.checkMark {
+  color: #4ecca3;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.noResults {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  padding: 12px 0;
+  margin: 0;
+}
+
+// Дата
+.dateField {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    width: 20px;
+    flex-shrink: 0;
+  }
+}
+
+.dateInput {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: #fff;
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  color-scheme: dark;
+
+  &:focus {
+    outline: none;
+    border-color: rgba(78, 204, 163, 0.5);
+  }
+}
+
+// Статистика в сайдбаре
+.statsBlock {
+  background: #1a1a1d;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+
+  span {
+    color: rgba(255, 255, 255, 0.45);
+  }
+  strong {
+    color: #fff;
+    font-size: 14px;
+  }
+}
+
+// ── Main content ──────────────────────────────────────────────────────────────
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+// Активные теги фильтров
+.activeTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 12px;
+  background: rgba(78, 204, 163, 0.1);
+  border: 1px solid rgba(78, 204, 163, 0.3);
+  border-radius: 20px;
+  font-size: 12px;
+  color: #4ecca3;
+
+  button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    opacity: 0.7;
+    line-height: 1;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.errorBlock {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: #ef4444;
+  font-size: 14px;
+}
+
+// ── Список логов ──────────────────────────────────────────────────────────────
+.logsList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.logRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #1a1a1d;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+}
+
+.actionIcon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.logLeft {
+  flex: 1;
+  min-width: 0;
+}
+
+.logMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.actionBadge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid;
+  font-size: 12px;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.logPeople {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.adminChip,
+.targetChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 3px 8px;
+}
+
+.targetChip {
+  background: rgba(56, 189, 248, 0.06);
+  border-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.chipIcon {
+  font-size: 11px;
+}
+
+.chipPhone {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-left: 2px;
+}
+
+.arrow {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.shiftBadge {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  padding: 2px 7px;
+  width: fit-content;
+}
+
+.logDate {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+// ── Пустое состояние ──────────────────────────────────────────────────────────
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.35);
+
+  .emptyIcon {
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+  p {
+    font-size: 15px;
+    margin: 0 0 16px;
+  }
+}
+
+// ── Пагинация ─────────────────────────────────────────────────────────────────
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.pageBtn {
+  padding: 8px 16px;
+  background: #1a1a1d;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    border-color: #4ecca3;
+    color: #4ecca3;
+  }
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.pageNumbers {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pageNum {
+  width: 34px;
+  height: 34px;
+  background: #1a1a1d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: rgba(78, 204, 163, 0.4);
+    color: #4ecca3;
+  }
+
+  &.pageActive {
+    background: rgba(78, 204, 163, 0.15);
+    border-color: #4ecca3;
+    color: #4ecca3;
+    font-weight: 700;
+  }
+}
+
+.dots {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 0 4px;
+}
+
+.countHint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  margin: 0;
+}
+
+// ── Skeleton ──────────────────────────────────────────────────────────────────
+.skeleton {
+  background: linear-gradient(90deg, #1f1f1f 25%, #282828 50%, #1f1f1f 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 6px;
+}
+
+.skAction {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.skLine {
+  height: 14px;
+  width: 60%;
+  margin-bottom: 6px;
+}
+.skLineShort {
+  height: 12px;
+  width: 40%;
+}
+.skDate {
+  width: 90px;
+  height: 12px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

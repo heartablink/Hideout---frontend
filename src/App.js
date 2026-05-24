@@ -28,6 +28,7 @@ import StaffProfile from './pages/Staffprofile';
 import BookingsHistoryPage from './pages/manager/BookingsHistoryPage';
 import LoyaltyPage from './pages/LoyaltyPage';
 import GuestBooking from './pages/admin/GuestBooking';
+import AdminLogs from './pages/manager/Adminlogs';
 
 import AnalyticsPage from './pages/manager/AnalyticsPage';
 import RoomsManagement from './pages/manager/Roomsmanagement';
@@ -188,6 +189,7 @@ function App() {
           >
             <Route index element={<AnalyticsPage />} />
             <Route path='shift' element={<ShiftPage />} />
+            <Route path='adminlogs' element={<AdminLogs />} />
             <Route path='rooms-managment' element={<RoomsManagement />} />
             <Route path='bookings' element={<BookingsHistoryPage />} />
             <Route path='currentBookings' element={<CurrentBookgns />} />
