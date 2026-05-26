@@ -115,7 +115,7 @@ const BookingModal = ({ roomId, onClose }) => {
   //следит за ценой чтобы сразу включаить радио по карте если не хвататет средст на счету
   useEffect(() => {
     if (userInfo.balance < totalPrice && paymentMethod === 'deposit' && totalPrice > 0) {
-      setPaymentMethod('external');
+      setPaymentMethod('cash');
     }
   }, [totalPrice, userInfo.balance, paymentMethod]);
 
@@ -266,7 +266,7 @@ const BookingModal = ({ roomId, onClose }) => {
                           </span>
                         </label>
 
-                        <label className={styles.radioLabel}>
+                        {/* <label className={styles.radioLabel}>
                           <input
                             type='radio'
                             name='payment'
@@ -275,7 +275,7 @@ const BookingModal = ({ roomId, onClose }) => {
                             onChange={(e) => setPaymentMethod(e.target.value)}
                           />
                           <span className={styles.radioText}>Оплата картой онлайн</span>
-                        </label>
+                        </label> */}
 
                         <label className={styles.radioLabel}>
                           <input
@@ -308,9 +308,9 @@ const BookingModal = ({ roomId, onClose }) => {
               <Button onClick={handleMainAction} disabled={hoursCount === 0}>
                 {Cookies.get('token') ? 'Забронировать' : 'Войти и забронировать'}
               </Button>
-              {Cookies.get('token') && (
+              {/* {Cookies.get('token') && (
                 <Button onClick={handleMainAction}>Купить пакет хайдов</Button>
-              )}
+              )} */}
             </div>
           </>
         ) : (

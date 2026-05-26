@@ -76,13 +76,13 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className={styles.bottom}>
+        {/* <div className={styles.bottom}>
           <p>© {new Date().getFullYear()} Hideout Gaming Hub. Все права защищены.</p>
           <div className={styles.legal}>
             <a href='#'>Политика конфиденциальности</a>
             <a href='#'>Публичная оферта</a>
           </div>
-        </div>
+        </div> */}
       </div>
     </footer>
   );
